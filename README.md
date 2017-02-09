@@ -1,5 +1,5 @@
 # IMG
-Image Processing Genie
+Image Manipulation Genie
 
 ##
 How to Run:
