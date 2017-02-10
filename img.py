@@ -9,6 +9,16 @@ pt0 = 0,0
 pt1 = 0,0
 
 image = np.zeros((1,1,3), np.uint8)
+clone = image.copy()
+
+croppedImages = []
+origImages = []
+
+class imageType:
+    cropped, original, none = range(3)
+
+mode = imageType.original
+
 #Set up GUI
 window = tk.Tk()  #Makes main window
 window.wm_title("Image Manipulation Genie (IMG)")
@@ -17,14 +27,47 @@ window.config(background="#FFFFFF")
 #window.geometry("%dx%d+%d+%d" % (1500, 750, 1, 1))
 
 #Graphics window
-imageFrame = tk.Frame(window, width=1500, height=750)
+imageFrame = tk.Frame(window, width=1500, height=1000)
 imageFrame.grid(row=0, column=0, padx=10, pady=2)
 
 lmain = tk.Label(imageFrame)
 lmain.grid(row=0, column=0)
 
+def setup_mode():
+    global mode, imageType, sliderFrame
+
+    if mode == imageType.original:
+        sliderFrame.grid_forget()
+        window.geometry("")
+    else:       
+        #Slider window (slider controls stage position)
+        sliderFrame = tk.Frame(window, width=800, height=400)
+        sliderFrame.grid(row = 1, column=0, padx=10, pady=2)
+        
+
 def crop_roi():
-    print "cropping current ROIs"
+    global image, clone, pts, croppedImages, mode, imageType
+
+    for i in range(0,len(pts),2):
+
+        # uses this formula
+        #     clone[y0:y1, x0:x1]
+        roi = clone[pts[i][1]:pts[i+1][1], pts[i][0]:pts[i+1][0]]
+        print pts[i], pts[i+1]
+        # set size of new image
+        roi = cv2.resize(roi, (400, 400))
+
+        if mode != imageType.cropped:
+            croppedImages.append(roi)
+            print "len(cI):", len(croppedImages)
+        else:
+            # this set applies to sub-cropping for greater accurracy
+            image = roi
+            clone = image.copy()
+            croppedImages[0] = image
+            image_loop()
+        
+        #window.attributes("-topmost", True)
     
 
 # ensures positive area and draws the rectangle
@@ -34,15 +77,26 @@ def make_rectangle():
 
     # ensures the set of two pts is in order from lowest to highest
     # so that "high-low >= 0" is true
-    pts.append(min(pt0,pt1))
-    pts.append(max(pt0,pt1))
+    # always ensure the area of the pts will not be negative
+    x0 = min(pt0[0],pt1[0])
+    y0 = min(pt0[1],pt1[1])
+    x1 = max(pt0[0],pt1[0])
+    y1 = max(pt0[1],pt1[1])
+    pts.append((x0,y0))
+    pts.append((x1,y1))
 
     # draws rectangle at two pts in color red (BGR) with width 2
     cv2.rectangle(image, pt0, pt1, (0, 0, 255), 2)
 
 # for click-n-crop feature
 def mouse_press(event):
-    global pt0
+    global pt0, pts, mode, imageType, image, clone
+
+    # only allow a single set of pts for cropped mode
+    if mode == imageType.cropped:
+        pts = []
+        image = clone.copy()
+
     pt0 = event.x, event.y
 
 def mouse_release(event):
@@ -53,7 +107,7 @@ def mouse_release(event):
 # for keyboard cmds or for quiting
 def update_key_press(event):
 
-    global image, clone, pts
+    global image, clone, pts, mode, imageType
 
     # if the 'r' key is pressed, reset the cropping region
     if event.keysym == 'r':
@@ -61,11 +115,43 @@ def update_key_press(event):
         pts = []
         print "Regions of interests cleared"
  
-    # if the 'p' key is pressed, print the pt list
-    if event.keysym == 'p':
+    # if the 'l' key is pressed, print the pt list
+    elif event.keysym == 'l':
         print "Printing points..."
         for i in range(0,len(pts),2):
             print pts[i], pts[i+1]
+
+    # if the 'c' key is pressed, crop the images
+    elif event.keysym == 'c':
+        if len(pts) < 2:
+            print "Could not crop.  No ROIs defined."
+        else:
+            print "Cropping ROIs..."
+
+            crop_roi()
+
+            # needed to make it show image
+            #cv2.waitKey(0)
+
+    # if the 'p' key is pressed, goto processed images list
+    elif event.keysym == 'p':
+        pts = []
+        if len(croppedImages) > 0:
+            print "Entering cropped image list..."
+            mode = imageType.cropped
+            image = croppedImages[0]
+            clone = image.copy()
+            setup_mode()
+
+    # if the 'o' key is pressed, goto original images list
+    elif event.keysym == 'o':
+        pts = []
+        if len(origImages) > 0:
+            print "Entering original image list..."
+            mode = imageType.original
+            image = origImages[0]
+            clone = image.copy()
+            setup_mode()
 
     # if the 'q' key is pressed, break from the loop
     elif event.keysym == 'q':
@@ -88,19 +174,17 @@ def show_image():
 def image_loop():
 
     show_image()
+    lmain.after(100, lambda: lmain.focus_force())
     lmain.after(10, image_loop)
 
 def main():
 
-    global image
+    global image, clone
 
     image = cv2.imread("sample.jpg")
     image = cv2.resize(image, (1500, 750))
+    origImages.append(image)
     clone = image.copy()
-
-    #Slider window (slider controls stage position)
-    sliderFrame = tk.Frame(window, width=500, height=100)
-    sliderFrame.grid(row = 600, column=0, padx=10, pady=2)
 
     image_loop() # display image function
 
@@ -109,11 +193,8 @@ def main():
     window.bind_all('<ButtonPress-1>', mouse_press)
     window.bind_all('<ButtonRelease-1>', mouse_release)
 
-
     # run the main loop of tkinter
     window.mainloop() #Starts GUI
-
-
 
 if __name__ == "__main__":
     main()
