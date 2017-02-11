@@ -10,6 +10,7 @@ pt1 = 0,0
 
 image = np.zeros((1,1,3), np.uint8)
 clone = image.copy()
+tempImg = image.copy()
 
 croppedImages = []
 origImages = []
@@ -49,24 +50,27 @@ def crop_roi():
     global image, clone, pts, croppedImages, mode, imageType
 
     for i in range(0,len(pts),2):
-
         # uses this formula
         #     clone[y0:y1, x0:x1]
         roi = clone[pts[i][1]:pts[i+1][1], pts[i][0]:pts[i+1][0]]
         print pts[i], pts[i+1]
-        # set size of new image
-        roi = cv2.resize(roi, (400, 400))
+        try:
+            # set size of new image
+            roi = cv2.resize(roi, (400, 400))
 
-        if mode != imageType.cropped:
-            croppedImages.append(roi)
-            print "len(cI):", len(croppedImages)
-        else:
-            # this set applies to sub-cropping for greater accurracy
-            image = roi
-            clone = image.copy()
-            croppedImages[0] = image
-            image_loop()
+            if mode != imageType.cropped:
+                croppedImages.append(roi)
+                print "len(cI):", len(croppedImages)
+            else:
+                # this code applies to sub-cropping for greater accurracy
+                image = roi
+                clone = image.copy()
+                croppedImages[0] = image
+                image_loop()
         
+        except:
+            print "some execption was thrown and arbitrarily handled."
+            pass
         #window.attributes("-topmost", True)
     
 
@@ -78,10 +82,12 @@ def make_rectangle():
     # ensures the set of two pts is in order from lowest to highest
     # so that "high-low >= 0" is true
     # always ensure the area of the pts will not be negative
-    x0 = min(pt0[0],pt1[0])
-    y0 = min(pt0[1],pt1[1])
-    x1 = max(pt0[0],pt1[0])
-    y1 = max(pt0[1],pt1[1])
+    h, w, c = image.shape
+    x0 = min(pt0[0],pt1[0], w)
+    y0 = min(pt0[1],pt1[1], h)
+    x1 = max(pt0[0],pt1[0], 0)
+    y1 = max(pt0[1],pt1[1], 0)
+
     pts.append((x0,y0))
     pts.append((x1,y1))
 
@@ -107,13 +113,20 @@ def mouse_release(event):
 # for keyboard cmds or for quiting
 def update_key_press(event):
 
-    global image, clone, pts, mode, imageType
+    global image, clone, tempImg, pts, mode, imageType
 
     # if the 'r' key is pressed, reset the cropping region
     if event.keysym == 'r':
+
+        print "Clearing regions of interests..."
         image = clone.copy()
         pts = []
-        print "Regions of interests cleared"
+
+        if mode == imageType.cropped:
+            print "Resetting Crop level..."
+            image = tempImg.copy()
+            clone = tempImg.copy()
+
  
     # if the 'l' key is pressed, print the pt list
     elif event.keysym == 'l':
@@ -141,6 +154,7 @@ def update_key_press(event):
             mode = imageType.cropped
             image = croppedImages[0]
             clone = image.copy()
+            tempImg = image.copy()
             setup_mode()
 
     # if the 'o' key is pressed, goto original images list
@@ -175,7 +189,7 @@ def image_loop():
 
     show_image()
     lmain.after(100, lambda: lmain.focus_force())
-    lmain.after(10, image_loop)
+    lmain.after(250, image_loop)
 
 def main():
 
