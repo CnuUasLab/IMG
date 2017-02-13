@@ -1,12 +1,16 @@
 import numpy as np
 import cv2
 import Tkinter as tk
-import Image, ImageTk
+from PIL import Image, ImageTk
+import glob
 import sys
 
 pts = []
 pt0 = 0,0
 pt1 = 0,0
+
+imgW = 1200
+imgH = 800
 
 image = np.zeros((1,1,3), np.uint8)
 clone = image.copy()
@@ -14,6 +18,8 @@ tempImg = image.copy()
 
 croppedImages = []
 origImages = []
+croppedIndex  = 0
+origIndex = 0
 
 class imageType:
     cropped, original, none = range(3)
@@ -28,7 +34,7 @@ window.config(background="#FFFFFF")
 #window.geometry("%dx%d+%d+%d" % (1500, 750, 1, 1))
 
 #Graphics window
-imageFrame = tk.Frame(window, width=1500, height=1000)
+imageFrame = tk.Frame(window, width=imgW, height=imgH)
 imageFrame.grid(row=0, column=0, padx=10, pady=2)
 
 lmain = tk.Label(imageFrame)
@@ -53,14 +59,13 @@ def crop_roi():
         # uses this formula
         #     clone[y0:y1, x0:x1]
         roi = clone[pts[i][1]:pts[i+1][1], pts[i][0]:pts[i+1][0]]
-        print pts[i], pts[i+1]
+
         try:
             # set size of new image
             roi = cv2.resize(roi, (400, 400))
 
             if mode != imageType.cropped:
                 croppedImages.append(roi)
-                print "len(cI):", len(croppedImages)
             else:
                 # this code applies to sub-cropping for greater accurracy
                 image = roi
@@ -94,6 +99,13 @@ def make_rectangle():
     # draws rectangle at two pts in color red (BGR) with width 2
     cv2.rectangle(image, pt0, pt1, (0, 0, 255), 2)
 
+# 
+def reload_image():
+        image = croppedImages[croppedIndex]
+        image = origImages[origImages]
+
+        clone = image.copy()
+
 # for click-n-crop feature
 def mouse_press(event):
     global pt0, pts, mode, imageType, image, clone
@@ -113,7 +125,7 @@ def mouse_release(event):
 # for keyboard cmds or for quiting
 def update_key_press(event):
 
-    global image, clone, tempImg, pts, mode, imageType
+    global image, clone, tempImg, pts, mode, imageType, croppedIndex, origIndex
 
     # if the 'r' key is pressed, reset the cropping region
     if event.keysym == 'r':
@@ -148,24 +160,56 @@ def update_key_press(event):
 
     # if the 'p' key is pressed, goto processed images list
     elif event.keysym == 'p':
-        pts = []
-        if len(croppedImages) > 0:
-            print "Entering cropped image list..."
-            mode = imageType.cropped
-            image = croppedImages[0]
-            clone = image.copy()
-            tempImg = image.copy()
-            setup_mode()
+        if mode == imageType.original:
+            pts = []
+            if len(croppedImages) > 0:
+                print "Entering cropped image list..."
+                mode = imageType.cropped
+                image = croppedImages[0]
+                clone = image.copy()
+                tempImg = image.copy()
+                setup_mode()
 
-    # if the 'o' key is pressed, goto original images list
+    # if the 'o' key is pressed, goto original :images list
     elif event.keysym == 'o':
-        pts = []
-        if len(origImages) > 0:
-            print "Entering original image list..."
-            mode = imageType.original
-            image = origImages[0]
-            clone = image.copy()
-            setup_mode()
+        if mode == imageType.cropped:
+            pts = []
+            if len(origImages) > 0:
+                print "Entering original image list..."
+                mode = imageType.original
+                image = origImages[0]
+                image = cv2.resize(image, (imgW, imgH))
+                clone = image.copy()
+                setup_mode()
+
+    #
+    elif event.keysym == 'n':
+        if mode == imageType.cropped:
+            if croppedIndex > 0:
+                croppedIndex = croppedIndex - 1
+            image = croppedImages[croppedIndex]
+            image = cv2.resize(image, (400, 400))
+
+        else:
+            if origIndex > 0:
+                origIndex = origIndex - 1
+            image = origImages[origIndex]
+        clone = image.copy()
+
+    #
+    elif event.keysym == 'm':
+        if mode == imageType.cropped:
+            if croppedIndex < len(croppedImages) - 1:
+                croppedIndex = croppedIndex + 1
+            image = croppedImages[croppedIndex]
+            image = cv2.resize(image, (400, 400))
+
+        else:
+            if origIndex < len(origImages) - 1:
+                origIndex = origIndex + 1
+            image = origImages[origIndex]
+        clone = image.copy()
+        #reload_image()
 
     # if the 'q' key is pressed, break from the loop
     elif event.keysym == 'q':
@@ -195,9 +239,15 @@ def main():
 
     global image, clone
 
-    image = cv2.imread("sample.jpg")
-    image = cv2.resize(image, (1500, 750))
-    origImages.append(image)
+    image_list = []
+    for filename in glob.glob('./*.jpg'):
+        im = cv2.imread(filename)
+        im = cv2.resize(im, (imgW, imgH))
+        #im=Image.open(filename)
+        origImages.append(im)
+
+    #image = cv2.imread("sample.jpg")
+    image = origImages[0]
     clone = image.copy()
 
     image_loop() # display image function
