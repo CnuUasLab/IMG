@@ -20,6 +20,7 @@ croppedImages = []
 origImages = []
 croppedIndex  = 0
 origIndex = 0
+imageModified = False
 
 class imageType:
     cropped, original, none = range(3)
@@ -53,7 +54,7 @@ def setup_mode():
         
 
 def crop_roi():
-    global image, clone, pts, croppedImages, mode, imageType
+    global image, clone, pts, croppedImages, mode, imageType, croppedIndex, imageModified
 
     for i in range(0,len(pts),2):
         # uses this formula
@@ -66,23 +67,27 @@ def crop_roi():
 
             if mode != imageType.cropped:
                 croppedImages.append(roi)
+                imageModified = False
             else:
                 # this code applies to sub-cropping for greater accurracy
                 image = roi
                 clone = image.copy()
-                croppedImages[0] = image
+                croppedImages[croppedIndex] = image
+                imageModified = True
                 image_loop()
         
         except:
             print "some execption was thrown and arbitrarily handled."
             pass
+
+    pts = []
         #window.attributes("-topmost", True)
     
 
 # ensures positive area and draws the rectangle
 def make_rectangle():
 
-    global image, pt0, pt1
+    global image, pt0, pt1, imageModified
 
     # ensures the set of two pts is in order from lowest to highest
     # so that "high-low >= 0" is true
@@ -98,8 +103,9 @@ def make_rectangle():
 
     # draws rectangle at two pts in color red (BGR) with width 2
     cv2.rectangle(image, pt0, pt1, (0, 0, 255), 2)
+    imageModified = True
 
-# 
+# unused rn
 def reload_image():
         image = croppedImages[croppedIndex]
         image = origImages[origImages]
@@ -125,19 +131,24 @@ def mouse_release(event):
 # for keyboard cmds or for quiting
 def update_key_press(event):
 
-    global image, clone, tempImg, pts, mode, imageType, croppedIndex, origIndex
+    global image, clone, tempImg, pts, mode, imageType, croppedIndex, origIndex, imageModified
 
     # if the 'r' key is pressed, reset the cropping region
     if event.keysym == 'r':
 
-        print "Clearing regions of interests..."
-        image = clone.copy()
-        pts = []
+        if mode == imageType.original and imageModified == True:
+            print "Clearing regions of interests..."
+            image = clone.copy()
+            pts = []
 
-        if mode == imageType.cropped:
+        if mode == imageType.cropped and imageModified == True:
             print "Resetting Crop level..."
             image = tempImg.copy()
             clone = tempImg.copy()
+
+        if imageModified == False:
+            print "Could not reset.  Nothing available to reset to."
+        imageModified = False
 
  
     # if the 'l' key is pressed, print the pt list
@@ -152,7 +163,6 @@ def update_key_press(event):
             print "Could not crop.  No ROIs defined."
         else:
             print "Cropping ROIs..."
-
             crop_roi()
 
             # needed to make it show image
@@ -168,6 +178,7 @@ def update_key_press(event):
                 image = croppedImages[0]
                 clone = image.copy()
                 tempImg = image.copy()
+                imageModified = False
                 setup_mode()
 
     # if the 'o' key is pressed, goto original :images list
@@ -180,6 +191,7 @@ def update_key_press(event):
                 image = origImages[0]
                 image = cv2.resize(image, (imgW, imgH))
                 clone = image.copy()
+                imageModified = False
                 setup_mode()
 
     #
@@ -196,6 +208,7 @@ def update_key_press(event):
             image = origImages[origIndex]
         clone = image.copy()
 
+        imageModified = False
     #
     elif event.keysym == 'm':
         if mode == imageType.cropped:
@@ -204,11 +217,14 @@ def update_key_press(event):
             image = croppedImages[croppedIndex]
             image = cv2.resize(image, (400, 400))
 
+
         else:
             if origIndex < len(origImages) - 1:
                 origIndex = origIndex + 1
             image = origImages[origIndex]
         clone = image.copy()
+
+        imageModfied = False
         #reload_image()
 
     # if the 'q' key is pressed, break from the loop
