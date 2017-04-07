@@ -5,148 +5,91 @@ from PIL import Image, ImageTk
 import glob
 import sys
 
-pts = []
-pt0 = 0,0
-pt1 = 0,0
-
-imgW = 1200
-imgH = 800
-
-image = np.zeros((1,1,3), np.uint8)
-clone = image.copy()
-tempImg = image.copy()
-
-croppedImages = []
-origImages = []
-croppedIndex  = 0
-origIndex = 0
-imageModified = False
-
-class imageType:
-    cropped, original, none = range(3)
-
-mode = imageType.original
+import vars as v
+from imageManipulation import *
 
 #Set up GUI
 window = tk.Tk()  #Makes main window
 window.wm_title("Image Manipulation Genie (IMG)")
 window.config(background="#FFFFFF")
 
+
 #window.geometry("%dx%d+%d+%d" % (1500, 750, 1, 1))
 
 #Graphics window
-imageFrame = tk.Frame(window, width=imgW, height=imgH)
+imageFrame = tk.Frame(window, width=v.imgW, height=v.imgH)
 imageFrame.grid(row=0, column=0, padx=10, pady=2)
 
 lmain = tk.Label(imageFrame)
 lmain.grid(row=0, column=0)
 
 def setup_mode():
-    global mode, imageType, sliderFrame
-
-    if mode == imageType.original:
+    global sliderFrame
+    if v.mode == v.imageType.original:
         sliderFrame.grid_forget()
         window.geometry("")
     else:       
         #Slider window (slider controls stage position)
         sliderFrame = tk.Frame(window, width=800, height=400)
         sliderFrame.grid(row = 1, column=0, padx=10, pady=2)
-        
-
-def crop_roi():
-    global image, clone, pts, croppedImages, mode, imageType, croppedIndex, imageModified
-
-    for i in range(0,len(pts),2):
-        # uses this formula
-        #     clone[y0:y1, x0:x1]
-        roi = clone[pts[i][1]:pts[i+1][1], pts[i][0]:pts[i+1][0]]
-
-        try:
-            # set size of new image
-            roi = cv2.resize(roi, (400, 400))
-
-            if mode != imageType.cropped:
-                croppedImages.append(roi)
-                imageModified = False
-            else:
-                # this code applies to sub-cropping for greater accurracy
-                image = roi
-                clone = image.copy()
-                croppedImages[croppedIndex] = image
-                imageModified = True
-                image_loop()
-        
-        except:
-            print "some execption was thrown and arbitrarily handled."
-            pass
-
-    pts = []
-        #window.attributes("-topmost", True)
-    
 
 # ensures positive area and draws the rectangle
 def make_rectangle():
 
-    global image, pt0, pt1, imageModified
-
     # ensures the set of two pts is in order from lowest to highest
     # so that "high-low >= 0" is true
     # always ensure the area of the pts will not be negative
-    h, w, c = image.shape
-    x0 = min(pt0[0],pt1[0], w)
-    y0 = min(pt0[1],pt1[1], h)
-    x1 = max(pt0[0],pt1[0], 0)
-    y1 = max(pt0[1],pt1[1], 0)
+    h, w, c = v.image.shape
+    x0 = min(v.pt0[0],v.pt1[0], w)
+    y0 = min(v.pt0[1],v.pt1[1], h)
+    x1 = max(v.pt0[0],v.pt1[0], 0)
+    y1 = max(v.pt0[1],v.pt1[1], 0)
 
-    pts.append((x0,y0))
-    pts.append((x1,y1))
+    v.pts.append((x0,y0))
+    v.pts.append((x1,y1))
 
     # draws rectangle at two pts in color red (BGR) with width 2
-    cv2.rectangle(image, pt0, pt1, (0, 0, 255), 2)
-    imageModified = True
+    cv2.rectangle(v.image, v.pt0, v.pt1, (0, 0, 255), 2)
+    v.imageModified = True
 
 # unused rn
 def reload_image():
-        image = croppedImages[croppedIndex]
-        image = origImages[origImages]
+        v.image = v.croppedImages[v.croppedIndex]
+        v.image = v.origImages[v.origImages]
 
-        clone = image.copy()
+        v.clone = v.image.copy()
 
 # for click-n-crop feature
 def mouse_press(event):
-    global pt0, pts, mode, imageType, image, clone
 
     # only allow a single set of pts for cropped mode
-    if mode == imageType.cropped:
-        pts = []
-        image = clone.copy()
+    if v.mode == v.imageType.cropped:
+        v.pts = []
+        v.image = (v.clone).copy()
 
-    pt0 = event.x, event.y
+    v.pt0 = event.x, event.y
 
 def mouse_release(event):
-    global pt1
-    pt1 = event.x, event.y
+    v.pt1 = event.x, event.y
     make_rectangle()
 
 # for keyboard cmds or for quiting
 def update_key_press(event):
 
-    global image, clone, tempImg, pts, mode, imageType, croppedIndex, origIndex, imageModified
-
     # if the 'r' key is pressed, reset the cropping region
     if event.keysym == 'r':
 
-        if mode == imageType.original and imageModified == True:
+        if v.mode == v.imageType.original and v.imageModified == True:
             print "Clearing regions of interests..."
-            image = clone.copy()
-            pts = []
+            image = (v.clone).copy()
+            v.pts = []
 
-        if mode == imageType.cropped and imageModified == True:
+        if v.mode == v.imageType.cropped and v.imageModified == True:
             print "Resetting Crop level..."
-            image = tempImg.copy()
-            clone = tempImg.copy()
+            image = (v.tempImg).copy()
+            clone = (v.tempImg).copy()
 
-        if imageModified == False:
+        if v.imageModified == False:
             print "Could not reset.  Nothing available to reset to."
         imageModified = False
 
@@ -154,75 +97,76 @@ def update_key_press(event):
     # if the 'l' key is pressed, print the pt list
     elif event.keysym == 'l':
         print "Printing points..."
-        for i in range(0,len(pts),2):
-            print pts[i], pts[i+1]
+        for i in range(0,len(v.pts),2):
+            print v.pts[i], v.pts[i+1]
 
     # if the 'c' key is pressed, crop the images
     elif event.keysym == 'c':
-        if len(pts) < 2:
+        if len(v.pts) < 2:
             print "Could not crop.  No ROIs defined."
         else:
             print "Cropping ROIs..."
             crop_roi()
+            image_loop()
 
             # needed to make it show image
             #cv2.waitKey(0)
 
     # if the 'p' key is pressed, goto processed images list
     elif event.keysym == 'p':
-        if mode == imageType.original:
-            pts = []
-            if len(croppedImages) > 0:
+        if v.mode == v.imageType.original:
+            v.pts = []
+            if len(v.croppedImages) > 0:
                 print "Entering cropped image list..."
-                mode = imageType.cropped
-                image = croppedImages[0]
-                clone = image.copy()
-                tempImg = image.copy()
-                imageModified = False
+                v.mode = v.imageType.cropped
+                v.image = v.croppedImages[0]
+                v.clone = v.image.copy()
+                v.tempImg = v.image.copy()
+                v.imageModified = False
                 setup_mode()
 
     # if the 'o' key is pressed, goto original :images list
     elif event.keysym == 'o':
-        if mode == imageType.cropped:
-            pts = []
-            if len(origImages) > 0:
+        if v.mode == v.imageType.cropped:
+            v.pts = []
+            if len(v.origImages) > 0:
                 print "Entering original image list..."
-                mode = imageType.original
-                image = origImages[0]
-                image = cv2.resize(image, (imgW, imgH))
-                clone = image.copy()
-                imageModified = False
+                v.mode = v.imageType.original
+                v.image = v.origImages[0]
+                v.image = cv2.resize(v.image, (v.imgW, v.imgH))
+                v.clone = v.image.copy()
+                v.imageModified = False
                 setup_mode()
 
     #
     elif event.keysym == 'n':
-        if mode == imageType.cropped:
-            if croppedIndex > 0:
-                croppedIndex = croppedIndex - 1
-            image = croppedImages[croppedIndex]
-            image = cv2.resize(image, (400, 400))
+        if v.mode == v.imageType.cropped:
+            if v.croppedIndex > 0:
+                v.croppedIndex = v.croppedIndex - 1
+            v.image = v.croppedImages[v.croppedIndex]
+            v.image = cv2.resize(v.image, (400, 400))
 
         else:
-            if origIndex > 0:
-                origIndex = origIndex - 1
-            image = origImages[origIndex]
-        clone = image.copy()
+            if v.origIndex > 0:
+                v.origIndex = v.origIndex - 1
+            v.image = v.origImages[v.origIndex]
+        v.clone = v.image.copy()
 
         imageModified = False
     #
     elif event.keysym == 'm':
-        if mode == imageType.cropped:
-            if croppedIndex < len(croppedImages) - 1:
-                croppedIndex = croppedIndex + 1
-            image = croppedImages[croppedIndex]
-            image = cv2.resize(image, (400, 400))
+        if v.mode == v.imageType.cropped:
+            if v.croppedIndex < len(v.croppedImages) - 1:
+                v.croppedIndex = v.croppedIndex + 1
+            v.image = v.croppedImages[v.croppedIndex]
+            v.image = cv2.resize(v.image, (400, 400))
 
 
         else:
-            if origIndex < len(origImages) - 1:
-                origIndex = origIndex + 1
-            image = origImages[origIndex]
-        clone = image.copy()
+            if v.origIndex < len(v.origImages) - 1:
+                v.origIndex = v.origIndex + 1
+            image = v.origImages[v.origIndex]
+        v.clone = v.image.copy()
 
         imageModfied = False
         #reload_image()
@@ -234,9 +178,7 @@ def update_key_press(event):
 
 def show_image():
 
-    global image, pt0, pt1
-
-    cv2image = cv2.cvtColor(image, cv2.COLOR_BGR2RGBA)
+    cv2image = cv2.cvtColor(v.image, cv2.COLOR_BGR2RGBA)
 
     img = Image.fromarray(cv2image)
 
@@ -253,18 +195,16 @@ def image_loop():
 
 def main():
 
-    global image, clone
-
     image_list = []
     for filename in glob.glob('./*.jpg'):
         im = cv2.imread(filename)
-        im = cv2.resize(im, (imgW, imgH))
+        im = cv2.resize(im, (v.imgW, v.imgH))
         #im=Image.open(filename)
-        origImages.append(im)
+        v.origImages.append(im)
 
     #image = cv2.imread("sample.jpg")
-    image = origImages[0]
-    clone = image.copy()
+    v.image = v.origImages[0]
+    v.clone = v.image.copy()
 
     image_loop() # display image function
 
