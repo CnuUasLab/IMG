@@ -17,8 +17,10 @@ Also, ensure python is in your evironment path.
 ```
 O   goto Original image list
 P   goto Processed image list
+
 N   Previous image
 M   Next image
+
 C   Crop regions of interests (red boxes)
 R   Reset ROIs
 L   List ROI points (for debugging)
