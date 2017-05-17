@@ -1,3 +1,4 @@
 opencv-python
 numpy
 pillow
+enum34>=1.0.4
