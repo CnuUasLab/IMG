@@ -6,6 +6,7 @@ import glob
 import sys
 from enum import Enum
 from KeyPress import update_key_press
+from image_unit import img as img
 
 imgW = 1200
 imgH = 800
@@ -19,7 +20,7 @@ class img2:
 		self.origList = []
 
 		self.importImages()
-		self.mode = Mode.orig
+		self.mode = mode.orig
 		self.index = 0
 
 		#Set up GUI
@@ -30,8 +31,10 @@ class img2:
 		for filename in glob.glob('./*.jpg'):
 			img = cv2.imread(filename)
 	    	img = cv2.resize(img, (imgW, imgH))
+	    	imgObj = image(img, self)
 
-	        self.origList.append(img)
+	        self.origList.append(imgObj)
+	        print "image imported",filename
 
 	def setupGUI(self):
 
@@ -60,16 +63,19 @@ class img2:
 	    self.lmain.after(100, lambda: self.lmain.focus_force())
 	    self.lmain.after(250, self.image_loop)
 
-	def show_image():
-		img = self.origList[index].getImage(self.mode)
-	    cv2image = cv2.cvtColor(, cv2.COLOR_BGR2RGBA)
+	def show_image(self):
+		liveImage = (self.origList[self.index]).getImageLive()
 
-	    img = Image.fromarray(cv2image)
+		cv2image = cv2.cvtColor(liveImage, cv2.COLOR_BGR2RGBA)
 
-	    imgtk = ImageTk.PhotoImage(image=img)
-	    lmain.imgtk = imgtk
+		print liveImage, cv2image
+		print "test"
+    	img = Image.fromarray(cv2image)
 
-	    lmain.configure(image=imgtk)
+    	imgtk = ImageTk.PhotoImage(image=img)
+    	lmain.imgtk = imgtk
+
+    	lmain.configure(image=imgtk)
 
 	def setup_mode(self):
 	    if self.mode == mode.orig:
