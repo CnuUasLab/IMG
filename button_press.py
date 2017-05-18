@@ -30,11 +30,11 @@ def key_press(event, master, imgObj):
 
     # if the 'c' key is pressed, crop the images
     elif event.keysym == 'c':
-        if len(pts) < 2:
+        if len(imgObj.pts) < 2:
             print "Could not crop.  No ROIs defined."
         else:
             print "Cropping ROIs..."
-            crop_roi()
+            imgObj.crop_roi()
 
             # needed to make it show image
             #cv2.waitKey(0)

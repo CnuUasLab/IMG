@@ -1,5 +1,9 @@
 import numpy as np
 import cv2
+import sys
+from enum import Enum
+
+mode = Enum('mode', 'orig cropped')
 
 class img_obj:
 
@@ -20,30 +24,25 @@ class img_obj:
 	def get_image_live(self):
 		return self.imgLive
 
-	def crop_sub_image(self):
-		for i in range(0,len(pts),2):
+	def crop_roi(self):
+		for i in range(0,len(self.pts),2):
+			pts = self.pts
 			# uses this formula
 			#     clone[y0:y1, x0:x1]
-			subImg = self.imgCopy[pts[i][1]:pts[i+1][1], pts[i][0]:pts[i+1][0]]
+			roi = self.imgCopy[pts[i][1]:pts[i+1][1], pts[i][0]:pts[i+1][0]]
 
-			try:
-				# set size of new image
-				subImg = cv2.resize(subImg, (400, 400))
+			# set size of new image
+			roi = cv2.resize(roi, (400, 400))
 
-				if mode != imageType.cropped:
-					croppedImages.append(roi)
-					imageModified = False
-				else:
-					# this code applies to sub-cropping for greater accurracy
-					image = roi
-					clone = image.copy()
-					croppedImages[croppedIndex] = image
-					imageModified = True
-					image_loop()
+			if self.master.mode == mode.orig:
+				tempImgObj = img_obj(self.master, roi)
+				self.master.cropList.append(roi)
+			else:
+				# this code applies to sub-cropping for greater accurracy
+				self.live = roi
+				self.copy = roi
 
-			except:
-				print "some execption was thrown and arbitrarily handled."
-				pass
+			self.master.image_loop()
 
 	def set_pt0(self, pt0):
 		self.pt0 = pt0
@@ -64,4 +63,3 @@ class img_obj:
 
 		# draws rectangle at two pts in color red (BGR) with width 2
 		cv2.rectangle(self.imgLive, self.pt0, pt1, (0, 0, 255), 2)
-		imageModified = True
