@@ -23,6 +23,9 @@ class img:
 		self.mode = mode.orig
 		self.index = -1
 		self.numOrig = 0
+		self.pt0 = 0,0
+		self.pt1 = 0,0
+		self.pts = []
 
 		# null obj
 		self.currImgObj = img_obj(self, nullImg)

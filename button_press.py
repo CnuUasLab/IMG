@@ -1,4 +1,7 @@
 import sys
+from enum import Enum
+
+mode = Enum('mode', 'orig cropped')
 
 # for keyboard cmds or for quiting
 def key_press(event, master, imgObj):
@@ -30,7 +33,7 @@ def key_press(event, master, imgObj):
 
     # if the 'c' key is pressed, crop the images
     elif event.keysym == 'c':
-        if len(imgObj.pts) < 2:
+        if len(master.pts) < 2:
             print "Could not crop.  No ROIs defined."
         else:
             print "Cropping ROIs..."
@@ -41,7 +44,7 @@ def key_press(event, master, imgObj):
 
     # if the 'p' key is pressed, goto processed images list
     elif event.keysym == 'p':
-        if mode == imageType.original:
+        if master.mode == mode.orig:
             pts = []
             if len(croppedImages) > 0:
                 print "Entering cropped image list..."
@@ -110,8 +113,8 @@ def mouse_press(event, master, imgObj):
     #    pts = []
     #    image = clone.copy()
 
-    imgObj.set_pt0((event.x, event.y))
-
+    master.pt0 = (event.x, event.y)
 
 def mouse_release(event, master, imgObj):
-    imgObj.make_rectangle((event.x, event.y))
+    master.pt1 = (event.x, event.y)
+    imgObj.make_rectangle()

@@ -11,8 +11,6 @@ class img_obj:
 		self.imgLive = newImg
 		self.imgCopy = newImg
 		self.master = master
-		self.pts = []
-		self.pt0 = 0,0
 
 	def new(self, newImg):
 		self.imgLive = newImg
@@ -25,8 +23,8 @@ class img_obj:
 		return self.imgLive
 
 	def crop_roi(self):
-		for i in range(0,len(self.pts),2):
-			pts = self.pts
+		for i in range(0,len(self.master.pts),2):
+			pts = self.master.pts
 			# uses this formula
 			#     clone[y0:y1, x0:x1]
 			roi = self.imgCopy[pts[i][1]:pts[i+1][1], pts[i][0]:pts[i+1][0]]
@@ -44,22 +42,22 @@ class img_obj:
 
 			self.master.image_loop()
 
-	def set_pt0(self, pt0):
-		self.pt0 = pt0
-
 		# ensures positive area and draws the rectangle
-	def make_rectangle(self, pt1):
+	def make_rectangle(self):
 		# ensures the set of two pts is in order from lowest to highest
 		# so that "high-low >= 0" is true
 		# always ensure the area of the pts will not be negative
-		h, w, c = (self.imgLive).shape
-		x0 = min(self.pt0[0],pt1[0], w)
-		y0 = min(self.pt0[1],pt1[1], h)
-		x1 = max(self.pt0[0],pt1[0], 0)
-		y1 = max(self.pt0[1],pt1[1], 0)
+		pt0 = self.master.pt0
+		pt1 = self.master.pt1
 
-		self.pts.append((x0,y0))
-		self.pts.append((x1,y1))
+		h, w, c = (self.imgLive).shape
+		x0 = min(pt0[0],pt1[0], w)
+		y0 = min(pt0[1],pt1[1], h)
+		x1 = max(pt0[0],pt1[0], 0)
+		y1 = max(pt0[1],pt1[1], 0)
+
+		self.master.pts.append((x0,y0))
+		self.master.pts.append((x1,y1))
 
 		# draws rectangle at two pts in color red (BGR) with width 2
-		cv2.rectangle(self.imgLive, self.pt0, pt1, (0, 0, 255), 2)
+		cv2.rectangle(self.imgLive, pt0, pt1, (0, 0, 255), 2)
