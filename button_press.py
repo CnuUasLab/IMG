@@ -1,7 +1,6 @@
 import sys
 from enum import Enum
-
-mode = Enum('mode', 'orig cropped')
+from var import mode
 
 # for keyboard cmds or for quiting
 def key_press(event, master, imgObj):

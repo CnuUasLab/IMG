@@ -2,8 +2,7 @@ import numpy as np
 import cv2
 import sys
 from enum import Enum
-
-mode = Enum('mode', 'orig cropped')
+from vars import mode
 
 class img_obj:
 

@@ -7,11 +7,12 @@ import sys
 from enum import Enum
 from button_press import key_press, mouse_press, mouse_release
 from image_object import img_obj as img_obj
+from var import mode
 
 imgW = 1200
 imgH = 800
 
-mode = Enum('mode', 'orig cropped')
+#mode = Enum('mode', 'orig cropped')
 
 nullImg = np.zeros((1,1,3), np.uint8)
 
