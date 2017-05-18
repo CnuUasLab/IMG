@@ -3,11 +3,12 @@ import cv2
 
 class img_obj:
 
-	def __init__(self, master, newImg=np.zeros((1,1,3), np.uint8)):
+	def __init__(self, master, newImg):
 		self.imgLive = newImg
 		self.imgCopy = newImg
 		self.master = master
 		self.pts = []
+		self.pt0 = 0,0
 
 	def new(self, newImg):
 		self.imgLive = newImg
@@ -52,7 +53,7 @@ class img_obj:
 		# ensures the set of two pts is in order from lowest to highest
 		# so that "high-low >= 0" is true
 		# always ensure the area of the pts will not be negative
-		h, w, c = self.imgLive.shape
+		h, w, c = (self.imgLive).shape
 		x0 = min(self.pt0[0],pt1[0], w)
 		y0 = min(self.pt0[1],pt1[1], h)
 		x1 = max(self.pt0[0],pt1[0], 0)
@@ -62,5 +63,5 @@ class img_obj:
 		self.pts.append((x1,y1))
 
 		# draws rectangle at two pts in color red (BGR) with width 2
-		self.imgLive = cv2.rectangle(self.imgLive, self.pt0, pt1, (0, 0, 255), 2)
+		cv2.rectangle(self.imgLive, self.pt0, pt1, (0, 0, 255), 2)
 		imageModified = True

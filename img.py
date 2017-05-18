@@ -13,6 +13,8 @@ imgH = 800
 
 mode = Enum('mode', 'orig cropped')
 
+nullImg = np.zeros((1,1,3), np.uint8)
+
 class img:
 
 	def __init__(self):
@@ -23,7 +25,7 @@ class img:
 		self.numOrig = 0
 
 		# null obj
-		self.currImgObj = img_obj(self)
+		self.currImgObj = img_obj(self, nullImg)
 
 		self.import_images()
 
@@ -43,7 +45,7 @@ class img:
 			print "image imported",filename
 
 		if self.numOrig > 0 and self.index < 0:
-			index = 0
+			self.index = 0
 		self.update_curr_image()
 
 	def setup_GUI(self):
@@ -78,9 +80,9 @@ class img:
 
 		cv2image = cv2.cvtColor(liveImage, cv2.COLOR_BGR2RGBA)
 
-		img = Image.fromarray(cv2image)
+		tempImage = Image.fromarray(cv2image)
 
-		imgtk = ImageTk.PhotoImage(image=img)
+		imgtk = ImageTk.PhotoImage(image=tempImage)
 		self.lmain.imgtk = imgtk
 
 		self.lmain.configure(image=imgtk)
@@ -95,11 +97,12 @@ class img:
 	        self.sliderFrame.grid(row = 1, column=0, padx=10, pady=2)
 
 	def update_curr_image(self):
-		if not(self.index == -1):
-			self.currImgObj = (self.origList[self.index]).get_image_live()
+		if self.index != -1:
+			self.currImgObj = (self.origList[self.index])
 		else:
 			# null obj
-			self.currImgObj = img_obj(self)
+			self.currImgObj = img_obj(self, nullImg)
+			print "in here"
 
 def main():
 	app = img()
