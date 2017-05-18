@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import sys
 from enum import Enum
-from vars import mode
+from var import mode
 
 class img_obj:
 
