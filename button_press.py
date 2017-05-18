@@ -1,5 +1,7 @@
+import sys
+
 # for keyboard cmds or for quiting
-def update_key_press(event):
+def key_press(event, master, imgObj):
 
     # if the 'r' key is pressed, reset the cropping region
     if event.keysym == 'r':
@@ -102,15 +104,14 @@ def update_key_press(event):
         sys.exit(0)
 
 # for click-n-crop feature
-    def mouse_press(event):
-        # only allow a single set of pts for cropped mode
-        if mode == imageType.cropped:
-            pts = []
-            image = clone.copy()
+def mouse_press(event, master, imgObj):
+    # only allow a single set of pts for cropped mode
+    #if mode == imageType.cropped:
+    #    pts = []
+    #    image = clone.copy()
 
-        pt0 = event.x, event.y
+    imgObj.set_pt0((event.x, event.y))
 
 
-    def mouse_release(event):
-        pt1 = event.x, event.y
-        make_rectangle()
+def mouse_release(event, master, imgObj):
+    imgObj.make_rectangle((event.x, event.y))
