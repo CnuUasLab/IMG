@@ -31,10 +31,12 @@ class img_obj:
 
 			# set size of new image
 			roi = cv2.resize(roi, (400, 400))
-
+			print self.master.mode
+			print (self.master).mode == mode.orig
 			if self.master.mode == mode.orig:
 				tempImgObj = img_obj(self.master, roi)
 				self.master.cropList.append(roi)
+				print len(cropList)
 			else:
 				# this code applies to sub-cropping for greater accurracy
 				self.live = roi

@@ -44,11 +44,13 @@ def key_press(event, master, imgObj):
 
     # if the 'p' key is pressed, goto processed images list
     elif event.keysym == 'p':
+        print "a p was pressed"
+        print master.mode, len(master.cropList)
         if master.mode == mode.orig:
             pts = []
-            if len(croppedImages) > 0:
+            if len(master.cropList) > 0:
                 print "Entering cropped image list..."
-                mode = imageType.cropped
+                master.mode = mode.cropped
                 image = croppedImages[0]
                 clone = image.copy()
                 tempImg = image.copy()
@@ -57,11 +59,11 @@ def key_press(event, master, imgObj):
 
     # if the 'o' key is pressed, goto original :images list
     elif event.keysym == 'o':
-        if mode == imageType.cropped:
+        if mode == mode.cropped:
             pts = []
-            if len(origImages) > 0:
+            if len(master.origList) > 0:
                 print "Entering original image list..."
-                mode = imageType.original
+                master.mode = imageType.orig
                 image = origImages[0]
                 image = cv2.resize(image, (imgW, imgH))
                 clone = image.copy()

@@ -18,6 +18,7 @@ nullImg = np.zeros((1,1,3), np.uint8)
 class img:
 
 	def __init__(self):
+		print self
 		self.cropList = []
 		self.origList = []
 		self.mode = mode.orig
@@ -105,7 +106,6 @@ class img:
 		else:
 			# null obj
 			self.currImgObj = img_obj(self, nullImg)
-			print "in here"
 
 def main():
 	app = img()
