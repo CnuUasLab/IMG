@@ -8,6 +8,7 @@ from enum import Enum
 from button_press import key_press, mouse_press, mouse_release
 from image_object import img_obj as img_obj
 from var import mode
+from var import imageType
 
 imgW = 1200
 imgH = 800
@@ -27,7 +28,8 @@ class img:
 		self.origIndex = 0
 		self.croppedIndex  = 0
 		self.imageModified = False
-		self.mode = mode.orig
+		# self.mode = mode.orig
+		self.mode = imageType.original
 		self.index = -1
 		self.numOrig = 0
 		self.pt0 = 0,0

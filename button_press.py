@@ -11,12 +11,12 @@ def key_press(event, master, imgObj):
 
     # if the 'r' key is pressed, reset the cropping region
     if event.keysym == 'r':
-        if mode == imageType.original and master.imageModified == True:
+        if master.mode == imageType.original and master.imageModified == True:
             print "Clearing regions of interests..."
-            image = copy.copy(clone)
+            image = copy.copy(imgObj)
             pts = []
 
-        if mode == imageType.cropped and master.imageModified == True:
+        if master.mode == imageType.cropped and master.imageModified == True:
             print "Resetting Crop level..."
             image = copy.copy(tempImg)
             clone = copy.copy(tempImg)
@@ -40,7 +40,7 @@ def key_press(event, master, imgObj):
         else:
             print "Cropping ROIs..."
             imgObj.crop_roi()
-
+            master.imageModified = True
             # needed to make it show image
             #cv2.waitKey(0)
 
