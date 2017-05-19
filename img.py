@@ -28,13 +28,15 @@ class img:
 		self.origIndex = 0
 		self.croppedIndex  = 0
 		self.imageModified = False
-		# self.mode = mode.orig
+		# self.mode = imageType.original
 		self.mode = imageType.original
 		self.index = -1
 		self.numOrig = 0
 		self.pt0 = 0,0
 		self.pt1 = 0,0
 		self.pts = []
+		self.imgW = 1200
+		self.imgH = 800
 
 		# null obj
 		self.currImgObj = img_obj(self, nullImg)
@@ -100,7 +102,7 @@ class img:
 		self.lmain.configure(image=imgtk)
 
 	def setup_mode(self):
-	    if self.mode == mode.orig:
+	    if self.mode == imageType.original:
 	        self.sliderFrame.grid_forget()
 	        self.window.geometry("")
 	    else:

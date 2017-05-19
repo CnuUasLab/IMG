@@ -3,6 +3,7 @@ import cv2
 import sys
 from enum import Enum
 from var import mode
+from var import imageType
 
 class img_obj:
 
@@ -31,8 +32,8 @@ class img_obj:
 			# set size of new image
 			roi = cv2.resize(roi, (400, 400))
 			print self.master.mode
-			print (self.master).mode == mode.orig
-			if self.master.mode == mode.orig:
+			print (self.master).mode == imageType.original
+			if self.master.mode == imageType.original:
 				tempImgObj = img_obj(self.master, roi)
 				self.master.cropList.append(roi)
 				print len(self.master.cropList)

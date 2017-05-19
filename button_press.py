@@ -1,4 +1,5 @@
 import sys
+import cv2
 import copy
 from enum import Enum
 from var import mode
@@ -31,8 +32,8 @@ def key_press(event, master, imgObj):
     # if the 'l' key is pressed, print the pt list
     elif event.keysym == 'l':
         print "Printing points..."
-        for i in range(0,len(pts),2):
-            print pts[i], pts[i+1]
+        for i in range(0,len(master.pts),2):
+            print master.pts[i], master.pts[i+1]
 
     # if the 'c' key is pressed, crop the images
     elif event.keysym == 'c':
@@ -49,11 +50,11 @@ def key_press(event, master, imgObj):
     elif event.keysym == 'p':
         print "a p was pressed"
         print master.mode, len(master.cropList)
-        if master.mode == mode.orig:
-            pts = []
+        if master.mode == imageType.original:
+            master.pts = []
             if len(master.cropList) > 0:
                 print "Entering cropped image list..."
-                master.mode = mode.cropped
+                master.mode = imageType.cropped
                 image = master.cropList[0]
                 clone = copy.copy(image)
                 tempImg = copy.copy(image)
@@ -62,20 +63,20 @@ def key_press(event, master, imgObj):
 
     # if the 'o' key is pressed, goto original :images list
     elif event.keysym == 'o':
-        if mode == mode.cropped:
-            pts = []
+        if master.mode == imageType.cropped:
+            master.pts = []
             if len(master.origList) > 0:
                 print "Entering original image list..."
-                master.mode = imageType.orig
+                master.mode = imageType.original
                 image = master.origList[0]
-                image = cv2.resize(image, (imgW, imgH))
+                # image = cv2.resize(image, (master.imgW, master.imgH))
                 clone = copy.copy(image)
                 master.imageModified = False
-                setup_mode()
+                master.setup_mode()
 
     #
     elif event.keysym == 'n':
-        if mode == imageType.cropped:
+        if master.mode == imageType.cropped:
             if master.croppedIndex > 0:
                 master.croppedIndex = master.croppedIndex - 1
             image = croppedImages[master.croppedIndex]
@@ -90,12 +91,11 @@ def key_press(event, master, imgObj):
         master.imageModified = False
     #
     elif event.keysym == 'm':
-        if mode == imageType.cropped:
+        if master.mode == imageType.cropped:
             if master.croppedIndex < len(croppedImages) - 1:
                 master.croppedIndex = master.croppedIndex + 1
             image = croppedImages[master.croppedIndex]
             image = cv2.resize(image, (400, 400))
-
 
         else:
             if master.origIndex < len(master.origList) - 1:
