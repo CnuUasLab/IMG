@@ -67,3 +67,4 @@ class img_obj:
 			self.master.pts.append((x1,y1))
 			# draws rectangle at two pts in color red (BGR) with width 2
 			cv2.rectangle(self.imgLive, pt0, pt1, (0, 0, 255), 2)
+			self.master.imageModified = True
