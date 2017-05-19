@@ -11,10 +11,11 @@ def key_press(event, master, imgObj):
 
     # if the 'r' key is pressed, reset the cropping region
     if event.keysym == 'r':
+        print("points"), master.pts
         if master.mode == imageType.original and master.imageModified == True:
             print "Clearing regions of interests..."
             image = copy.copy(imgObj)
-            pts = []
+            master.pts = []
 
         if master.mode == imageType.cropped and master.imageModified == True:
             print "Resetting Crop level..."
@@ -25,7 +26,7 @@ def key_press(event, master, imgObj):
             print "Could not reset.  Nothing available to reset to."
 
         master.imageModified = False
-
+        print("points after"), master.pts
 
     # if the 'l' key is pressed, print the pt list
     elif event.keysym == 'l':
