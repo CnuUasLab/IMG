@@ -12,6 +12,8 @@ from var import mode
 imgW = 1200
 imgH = 800
 
+
+
 #mode = Enum('mode', 'orig cropped')
 
 nullImg = np.zeros((1,1,3), np.uint8)
@@ -22,6 +24,9 @@ class img:
 		print self
 		self.cropList = []
 		self.origList = []
+		self.origIndex = 0
+		self.croppedIndex  = 0
+		self.imageModified = False
 		self.mode = mode.orig
 		self.index = -1
 		self.numOrig = 0
@@ -96,9 +101,9 @@ class img:
 	    if self.mode == mode.orig:
 	        self.sliderFrame.grid_forget()
 	        self.window.geometry("")
-	    else:       
+	    else:
 	        #Slider window (slider controls stage position)
-	        self.sliderFrame = tk.Frame(window, width=800, height=400)
+	        self.sliderFrame = tk.Frame(self.window, width=800, height=400)
 	        self.sliderFrame.grid(row = 1, column=0, padx=10, pady=2)
 
 	def update_curr_image(self):

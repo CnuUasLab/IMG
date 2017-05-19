@@ -1,29 +1,32 @@
 import sys
+import copy
 from enum import Enum
 from var import mode
+
+class imageType:
+    cropped, original, none = range(3)
 
 # for keyboard cmds or for quiting
 def key_press(event, master, imgObj):
 
     # if the 'r' key is pressed, reset the cropping region
     if event.keysym == 'r':
-
-        if mode == imageType.original and imageModified == True:
+        if mode == imageType.original and master.imageModified == True:
             print "Clearing regions of interests..."
-            image = clone.copy()
+            image = copy.copy(clone)
             pts = []
 
-        if mode == imageType.cropped and imageModified == True:
+        if mode == imageType.cropped and master.imageModified == True:
             print "Resetting Crop level..."
-            image = tempImg.copy()
-            clone = tempImg.copy()
+            image = copy.copy(tempImg)
+            clone = copy.copy(tempImg)
 
-        if imageModified == False:
+        if master.imageModified == False:
             print "Could not reset.  Nothing available to reset to."
-            
-        imageModified = False
 
- 
+        master.imageModified = False
+
+
     # if the 'l' key is pressed, print the pt list
     elif event.keysym == 'l':
         print "Printing points..."
@@ -50,11 +53,11 @@ def key_press(event, master, imgObj):
             if len(master.cropList) > 0:
                 print "Entering cropped image list..."
                 master.mode = mode.cropped
-                image = croppedImages[0]
-                clone = image.copy()
-                tempImg = image.copy()
-                imageModified = False
-                setup_mode()
+                image = master.cropList[0]
+                clone = copy.copy(image)
+                tempImg = copy.copy(image)
+                master.imageModified = False
+                master.setup_mode()
 
     # if the 'o' key is pressed, goto original :images list
     elif event.keysym == 'o':
@@ -63,43 +66,43 @@ def key_press(event, master, imgObj):
             if len(master.origList) > 0:
                 print "Entering original image list..."
                 master.mode = imageType.orig
-                image = origImages[0]
+                image = master.origList[0]
                 image = cv2.resize(image, (imgW, imgH))
-                clone = image.copy()
-                imageModified = False
+                clone = copy.copy(image)
+                master.imageModified = False
                 setup_mode()
 
     #
     elif event.keysym == 'n':
         if mode == imageType.cropped:
-            if croppedIndex > 0:
-                croppedIndex = croppedIndex - 1
-            image = croppedImages[croppedIndex]
+            if master.croppedIndex > 0:
+                master.croppedIndex = master.croppedIndex - 1
+            image = croppedImages[master.croppedIndex]
             image = cv2.resize(image, (400, 400))
 
         else:
-            if origIndex > 0:
-                origIndex = origIndex - 1
-            image = origImages[origIndex]
-        clone = image.copy()
+            if master.origIndex > 0:
+                master.origIndex = master.origIndex - 1
+            image = master.origList[master.origIndex]
+        clone = copy.copy(image)
 
-        imageModified = False
+        master.imageModified = False
     #
     elif event.keysym == 'm':
         if mode == imageType.cropped:
-            if croppedIndex < len(croppedImages) - 1:
-                croppedIndex = croppedIndex + 1
-            image = croppedImages[croppedIndex]
+            if master.croppedIndex < len(croppedImages) - 1:
+                master.croppedIndex = master.croppedIndex + 1
+            image = croppedImages[master.croppedIndex]
             image = cv2.resize(image, (400, 400))
 
 
         else:
-            if origIndex < len(origImages) - 1:
-                origIndex = origIndex + 1
-            image = origImages[origIndex]
-        clone = image.copy()
+            if master.origIndex < len(master.origList) - 1:
+                master.origIndex = master.origIndex + 1
+            image = master.origList[master.origIndex]
+        clone = copy.copy(image)
 
-        imageModfied = False
+        master.imageModfied = False
         #reload_image()
 
     # if the 'q' key is pressed, break from the loop
@@ -113,7 +116,6 @@ def mouse_press(event, master, imgObj):
     #if mode == imageType.cropped:
     #    pts = []
     #    image = clone.copy()
-
     master.pt0 = (event.x, event.y)
 
 def mouse_release(event, master, imgObj):
