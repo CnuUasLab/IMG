@@ -7,16 +7,16 @@ from var import mode
 class img_obj:
 
 	def __init__(self, master, newImg):
-		self.imgLive = newImg
+		self.imgLive = newImg.copy()
 		self.imgCopy = newImg.copy()
 		self.master = master
 
 	def new(self, newImg):
-		self.imgLive = newImg
+		self.imgLive = newImg.copy()
 		self.imgCopy = newImg.copy()
 
 	def reset(self):
-		self.imgLive = self.imgCopy
+		self.imgLive = self.imgCopy.copy()
 
 	def get_image_live(self):
 		return self.imgLive
@@ -31,16 +31,13 @@ class img_obj:
 			# set size of new image
 			roi = cv2.resize(roi, (400, 400))
 
-			print "cropROI mode equality:", self.master.mode == mode.orig
-
 			if self.master.mode == mode.orig:
 				imgObj = img_obj(self.master, roi)
 				self.master.cropList.append(imgObj)
-				print "length of crop list:", len(self.master.cropList)
 			else:
 				# this code applies to sub-cropping for greater accurracy
-				self.live = roi
-				self.copy = roi
+				self.live = roi.copy()
+				self.copy = roi.copy()
 
 			self.master.image_loop()
 
@@ -60,7 +57,6 @@ class img_obj:
 
 		if x0 > 0 and x1 > 0 and y0 > 0 and y1 > 0:
 			self.master.pts.append((x0,y0))
-			print("points appended")
 			self.master.pts.append((x1,y1))
 			# draws rectangle at two pts in color red (BGR) with width 2
 			cv2.rectangle(self.imgLive, pt0, pt1, (0, 0, 255), 2)

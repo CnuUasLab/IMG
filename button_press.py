@@ -48,7 +48,8 @@ def key_press(event, master, imgObj):
 
     # if the 'p' key is pressed, goto processed images list
     elif event.keysym == 'p':
-        print "a p was pressed"
+        imgObj.reset()
+
         print master.mode, len(master.cropList)
         if master.mode == mode.orig:
             master.pts = []
