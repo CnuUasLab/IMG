@@ -35,6 +35,7 @@ class img_obj:
 				imgObj = img_obj(self.master, roi)
 				self.master.cropList.append(imgObj)
 			else:
+				print "sub cropping applies"
 				# this code applies to sub-cropping for greater accurracy
 				self.live = roi.copy()
 				self.copy = roi.copy()
@@ -55,9 +56,8 @@ class img_obj:
 		x1 = max(pt0[0],pt1[0], 0)
 		y1 = max(pt0[1],pt1[1], 0)
 
-		if x0 > 0 and x1 > 0 and y0 > 0 and y1 > 0:
-			self.master.pts.append((x0,y0))
-			self.master.pts.append((x1,y1))
-			# draws rectangle at two pts in color red (BGR) with width 2
-			cv2.rectangle(self.imgLive, pt0, pt1, (0, 0, 255), 2)
-			self.master.imageModified = True
+		self.master.pts.append((x0,y0))
+		self.master.pts.append((x1,y1))
+		# draws rectangle at two pts in color red (BGR) with width 2
+		cv2.rectangle(self.imgLive, pt0, pt1, (0, 0, 255), 2)
+		self.master.imageModified = True

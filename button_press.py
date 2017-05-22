@@ -50,13 +50,12 @@ def key_press(event, master, imgObj):
     elif event.keysym == 'p':
         imgObj.reset()
 
-        print master.mode, len(master.cropList)
         if master.mode == mode.orig:
             master.pts = []
             if len(master.cropList) > 0:
                 print "Entering cropped image list..."
                 master.mode = mode.cropped
-
+                master.update_curr_img_obj()
                 master.imageModified = False
                 master.setup_mode()
 

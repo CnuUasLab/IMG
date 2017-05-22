@@ -59,7 +59,7 @@ class img:
 
 		if self.numOrig > 0 and self.origIndex < 0:
 			self.origIndex = 0
-		self.update_curr_image()
+		self.update_curr_img_obj()
 
 	def setup_GUI(self):
 
@@ -89,10 +89,8 @@ class img:
 	    self.lmain.after(250, self.image_loop)
 
 	def show_image(self):
-		if self.mode == mode.orig:
-			liveImage = (self.origList[self.origIndex]).get_image_live()
-		else:
-			liveImage = (self.cropList[self.cropIndex]).get_image_live()
+		self.update_curr_img_obj()
+		liveImage = self.currImgObj.get_image_live()
 
 		cv2image = cv2.cvtColor(liveImage, cv2.COLOR_BGR2RGBA)
 
@@ -112,10 +110,12 @@ class img:
 	        self.sliderFrame = tk.Frame(self.window, width=800, height=400)
 	        self.sliderFrame.grid(row = 1, column=0, padx=10, pady=2)
 
-	def update_curr_image(self):
+	def update_curr_img_obj(self):
 
-		if self.origIndex != -1 and self.mode == mode.orig:
+		if len(self.origList) and self.mode == mode.orig:
 			self.currImgObj = (self.origList[self.origIndex])
+		elif len(self.cropList) and self.mode == mode.cropped:
+			self.currImgObj = (self.cropList[self.cropIndex])
 		else:
 			# null obj
 			self.currImgObj = img_obj(self, nullImg)
