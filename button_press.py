@@ -55,54 +55,44 @@ def key_press(event, master, imgObj):
             master.pts = []
             if len(master.cropList) > 0:
                 print "Entering cropped image list..."
-                master.mode = imageType.cropped
-                image = master.cropList[0]
-                clone = copy.copy(image)
-                tempImg = copy.copy(image)
+                master.mode = mode.cropped
+
                 master.imageModified = False
                 master.setup_mode()
 
     # if the 'o' key is pressed, goto original :images list
     elif event.keysym == 'o':
-        if master.mode == imageType.cropped:
+        if master.mode == mode.cropped:
             master.pts = []
             if len(master.origList) > 0:
                 print "Entering original image list..."
                 master.mode = mode.orig
-                image = master.origList[0]
-                # image = cv2.resize(image, (master.imgW, master.imgH))
-                clone = copy.copy(image)
+
                 master.imageModified = False
                 master.setup_mode()
 
     #
     elif event.keysym == 'n':
-        if master.mode == imageType.cropped:
-            if master.croppedIndex > 0:
-                master.croppedIndex = master.croppedIndex - 1
-            image = croppedImages[master.croppedIndex]
-            image = cv2.resize(image, (400, 400))
+        if master.mode == mode.cropped:
+            if master.cropIndex > 0:
+                master.cropIndex = master.cropIndex - 1
 
         else:
             if master.origIndex > 0:
                 master.origIndex = master.origIndex - 1
             image = master.origList[master.origIndex]
-        clone = copy.copy(image)
 
         master.imageModified = False
     #
     elif event.keysym == 'm':
-        if master.mode == imageType.cropped:
-            if master.croppedIndex < len(croppedImages) - 1:
-                master.croppedIndex = master.croppedIndex + 1
-            image = croppedImages[master.croppedIndex]
-            image = cv2.resize(image, (400, 400))
+        if master.mode == mode.cropped:
+            if master.cropIndex < len(master.cropList) - 1:
+                master.cropIndex = master.cropIndex + 1
 
         else:
             if master.origIndex < len(master.origList) - 1:
                 master.origIndex = master.origIndex + 1
             image = master.origList[master.origIndex]
-        clone = copy.copy(image)
 
         master.imageModfied = False
         #reload_image()

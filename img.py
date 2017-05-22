@@ -24,8 +24,8 @@ class img:
 		print self
 		self.cropList = []
 		self.origList = []
-		self.origIndex = 0
-		self.croppedIndex  = 0
+		self.origIndex = -1
+		self.cropIndex = -1
 		self.imageModified = False
 		# self.mode = imageType.original
 		self.mode = mode.orig
@@ -57,8 +57,8 @@ class img:
 
 			print "image imported",filename
 
-		if self.numOrig > 0 and self.index < 0:
-			self.index = 0
+		if self.numOrig > 0 and self.origIndex < 0:
+			self.origIndex = 0
 		self.update_curr_image()
 
 	def setup_GUI(self):
@@ -90,9 +90,9 @@ class img:
 
 	def show_image(self):
 		if self.mode == mode.orig:
-			liveImage = (self.origList[self.index]).get_image_live()
+			liveImage = (self.origList[self.origIndex]).get_image_live()
 		else:
-			liveImage = (self.cropList[0]).get_image_live()
+			liveImage = (self.cropList[self.cropIndex]).get_image_live()
 
 		cv2image = cv2.cvtColor(liveImage, cv2.COLOR_BGR2RGBA)
 
@@ -113,8 +113,9 @@ class img:
 	        self.sliderFrame.grid(row = 1, column=0, padx=10, pady=2)
 
 	def update_curr_image(self):
-		if self.index != -1:
-			self.currImgObj = (self.origList[self.index])
+
+		if self.origIndex != -1 and self.mode == mode.orig:
+			self.currImgObj = (self.origList[self.origIndex])
 		else:
 			# null obj
 			self.currImgObj = img_obj(self, nullImg)
