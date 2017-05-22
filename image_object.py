@@ -3,18 +3,17 @@ import cv2
 import sys
 from enum import Enum
 from var import mode
-from var import imageType
 
 class img_obj:
 
 	def __init__(self, master, newImg):
 		self.imgLive = newImg
-		self.imgCopy = newImg
+		self.imgCopy = newImg.copy()
 		self.master = master
 
 	def new(self, newImg):
 		self.imgLive = newImg
-		self.imgCopy = newImg
+		self.imgCopy = newImg.copy()
 
 	def reset(self):
 		self.imgLive = self.imgCopy
@@ -31,12 +30,13 @@ class img_obj:
 
 			# set size of new image
 			roi = cv2.resize(roi, (400, 400))
-			print self.master.mode
-			print (self.master).mode == imageType.original
-			if self.master.mode == imageType.original:
-				tempImgObj = img_obj(self.master, roi)
-				self.master.cropList.append(roi)
-				print len(self.master.cropList)
+
+			print "cropROI mode equality:", self.master.mode == mode.orig
+
+			if self.master.mode == mode.orig:
+				imgObj = img_obj(self.master, roi)
+				self.master.cropList.append(imgObj)
+				print "length of crop list:", len(self.master.cropList)
 			else:
 				# this code applies to sub-cropping for greater accurracy
 				self.live = roi
@@ -61,10 +61,6 @@ class img_obj:
 		if x0 > 0 and x1 > 0 and y0 > 0 and y1 > 0:
 			self.master.pts.append((x0,y0))
 			print("points appended")
-			print(x0)
-			print(y0)
-			print(x1)
-			print(y1)
 			self.master.pts.append((x1,y1))
 			# draws rectangle at two pts in color red (BGR) with width 2
 			cv2.rectangle(self.imgLive, pt0, pt1, (0, 0, 255), 2)

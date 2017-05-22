@@ -50,7 +50,7 @@ def key_press(event, master, imgObj):
     elif event.keysym == 'p':
         print "a p was pressed"
         print master.mode, len(master.cropList)
-        if master.mode == imageType.original:
+        if master.mode == mode.orig:
             master.pts = []
             if len(master.cropList) > 0:
                 print "Entering cropped image list..."
@@ -67,7 +67,7 @@ def key_press(event, master, imgObj):
             master.pts = []
             if len(master.origList) > 0:
                 print "Entering original image list..."
-                master.mode = imageType.original
+                master.mode = mode.orig
                 image = master.origList[0]
                 # image = cv2.resize(image, (master.imgW, master.imgH))
                 clone = copy.copy(image)

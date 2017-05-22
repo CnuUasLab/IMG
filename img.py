@@ -8,7 +8,6 @@ from enum import Enum
 from button_press import key_press, mouse_press, mouse_release
 from image_object import img_obj as img_obj
 from var import mode
-from var import imageType
 
 imgW = 1200
 imgH = 800
@@ -29,7 +28,7 @@ class img:
 		self.croppedIndex  = 0
 		self.imageModified = False
 		# self.mode = imageType.original
-		self.mode = imageType.original
+		self.mode = mode.orig
 		self.index = -1
 		self.numOrig = 0
 		self.pt0 = 0,0
@@ -90,7 +89,10 @@ class img:
 	    self.lmain.after(250, self.image_loop)
 
 	def show_image(self):
-		liveImage = (self.origList[self.index]).get_image_live()
+		if self.mode == mode.orig:
+			liveImage = (self.origList[self.index]).get_image_live()
+		else:
+			liveImage = (self.cropList[0]).get_image_live()
 
 		cv2image = cv2.cvtColor(liveImage, cv2.COLOR_BGR2RGBA)
 
@@ -102,7 +104,7 @@ class img:
 		self.lmain.configure(image=imgtk)
 
 	def setup_mode(self):
-	    if self.mode == imageType.original:
+	    if self.mode == mode.orig:
 	        self.sliderFrame.grid_forget()
 	        self.window.geometry("")
 	    else:
