@@ -35,10 +35,9 @@ class img_obj:
 				imgObj = img_obj(self.master, roi)
 				self.master.cropList.append(imgObj)
 			else:
-				print "sub cropping applies"
 				# this code applies to sub-cropping for greater accurracy
-				self.live = roi.copy()
-				self.copy = roi.copy()
+				self.imgLive = roi.copy()
+				self.imgCopy = roi.copy()
 
 			self.master.image_loop()
 

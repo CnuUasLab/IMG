@@ -12,10 +12,6 @@ from var import mode
 imgW = 1200
 imgH = 800
 
-
-
-#mode = Enum('mode', 'orig cropped')
-
 nullImg = np.zeros((1,1,3), np.uint8)
 
 class img:
