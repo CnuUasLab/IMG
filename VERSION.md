@@ -4,17 +4,17 @@ LastVersion:0.1
 Status:Not-Ready
 ```
 
-SytemsWorking:
+Sytems Working:
 ```
 LoadImages:		Yes
 Cropping:		Yes
 BasicUI:		Yes
-TargetDetails:	No
+TagetDetails:		No
 Submission:		No
-ReloadImages:	No
+ReloadImages:		No
 AutoPull:		No
 Interop:		No
-MultiSubmit:	No
+MultiSubmit:		No
 ```
 
 Notes:
