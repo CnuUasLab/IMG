@@ -4,24 +4,20 @@ import copy
 from enum import Enum
 from var import mode
 
-class imageType:
-    cropped, original, none = range(3)
-
 # for keyboard cmds or for quiting
 def key_press(event, master, imgObj):
 
     # if the 'r' key is pressed, reset the cropping region
     if event.keysym == 'r':
         print("points"), master.pts
-        if master.mode == imageType.original and master.imageModified == True:
+        master.pts=[]
+        if master.mode == mode.orig and master.imageModified == True:
             print "Clearing regions of interests..."
-            image = copy.copy(imgObj)
-            master.pts = []
+            imgObj.imgLive = imgObj.imgCopy.copy()
 
-        if master.mode == imageType.cropped and master.imageModified == True:
+        if master.mode == mode.cropped and master.imageModified == True:
             print "Resetting Crop level..."
-            image = copy.copy(tempImg)
-            clone = copy.copy(tempImg)
+            imgObj.imgLive = imgObj.imgCopy.copy()
 
         if master.imageModified == False:
             print "Could not reset.  Nothing available to reset to."
