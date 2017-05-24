@@ -22,24 +22,27 @@ class img_obj:
 		return self.imgLive
 
 	def crop_roi(self):
+		from target_image_object import targ_img_obj
+
 		for i in range(0,len(self.master.pts),2):
-			pts = self.master.pts
-			# uses this formula
-			#     clone[y0:y1, x0:x1]
-			roi = self.imgCopy[pts[i][1]:pts[i+1][1], pts[i][0]:pts[i+1][0]]
+			roi = self.get_roi(i)
 
-			# set size of new image
-			roi = cv2.resize(roi, (400, 400))
+			imgObj = targ_img_obj(self.master, roi)
+			self.master.cropList.append(imgObj)
 
-			if self.master.mode == mode.orig:
-				imgObj = img_obj(self.master, roi)
-				self.master.cropList.append(imgObj)
-			else:
-				# this code applies to sub-cropping for greater accurracy
-				self.imgLive = roi.copy()
-				self.imgCopy = roi.copy()
+		self.master.image_loop()
 
-			self.master.image_loop()
+	def get_roi(self, index):
+		i = index
+
+		pts = self.master.pts
+		# uses this formula
+		#     clone[y0:y1, x0:x1]
+		roi = self.imgCopy[pts[i][1]:pts[i+1][1], pts[i][0]:pts[i+1][0]]
+
+		# set size of new image
+		roi = cv2.resize(roi, (400, 400))
+		return roi
 
 		# ensures positive area and draws the rectangle
 	def make_rectangle(self):
