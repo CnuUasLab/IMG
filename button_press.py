@@ -54,6 +54,7 @@ def key_press(event, master, imgObj):
                 master.update_curr_img_obj()
                 master.imageModified = False
                 master.setup_mode()
+                master.set_entry_data()
 
     # if the 'o' key is pressed, goto original :images list
     elif event.keysym == 'o':
@@ -65,6 +66,7 @@ def key_press(event, master, imgObj):
 
                 master.imageModified = False
                 master.setup_mode()
+                master.set_entry_data()
 
     #
     elif event.keysym == 'n':
@@ -78,6 +80,7 @@ def key_press(event, master, imgObj):
             image = master.origList[master.origIndex]
 
         master.imageModified = False
+        master.set_entry_data()
     #
     elif event.keysym == 'm':
         if master.mode == mode.cropped:
@@ -90,6 +93,7 @@ def key_press(event, master, imgObj):
             image = master.origList[master.origIndex]
 
         master.imageModfied = False
+        master.set_entry_data()
         #reload_image()
 
     # if the 'q' key is pressed, break from the loop
