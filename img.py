@@ -160,6 +160,7 @@ class img:
 	        #Slider window (slider controls stage position)
 	        self.sliderFrame = tk.Frame(self.window, width=800, height=400)
 	        self.sliderFrame.grid(row = 1, column=0, padx=10, pady=2)
+	        self.sliderFrame.config(background="RED")
 
 	def update_curr_img_obj(self):
 		if len(self.origList) and self.mode == mode.orig:
