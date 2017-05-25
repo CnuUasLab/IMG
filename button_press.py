@@ -72,6 +72,7 @@ def key_press(event, master, imgObj):
 
     #
     elif event.keysym == 'n':
+        master.get_entry_data()
         if master.mode == mode.cropped:
             if master.cropIndex > 0:
                 master.cropIndex = master.cropIndex - 1
@@ -82,10 +83,10 @@ def key_press(event, master, imgObj):
             image = master.origList[master.origIndex]
 
         master.imageModified = False
-        master.get_entry_data()
         master.set_entry_data()
     #
     elif event.keysym == 'm':
+        master.get_entry_data()
         if master.mode == mode.cropped:
             if master.cropIndex < len(master.cropList) - 1:
                 master.cropIndex = master.cropIndex + 1
@@ -96,7 +97,6 @@ def key_press(event, master, imgObj):
             image = master.origList[master.origIndex]
 
         master.imageModfied = False
-        master.get_entry_data()
         master.set_entry_data()
         #reload_image()
 

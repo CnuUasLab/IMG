@@ -23,7 +23,7 @@ class img:
 		self.cropList = []
 		self.origList = []
 		self.origIndex = -1
-		self.cropIndex = -1
+		self.cropIndex = 0
 		self.imageModified = False
 		# self.mode = imageType.original
 		self.mode = mode.orig
@@ -84,30 +84,42 @@ class img:
 
 	def get_entry_data(self):
 		if self.mode != mode.orig:
+			if(self.cropIndex + 1 > len(self.cropData)):
+				print("extendo in get")
+				self.cropData.append(["", "", ""])
 			# this hasn't been initialized yet, first element of cropData is []
 			temp = copy.copy(self.cropData[self.cropIndex])
 			if(temp == []):
-				print("setting temp to nothing")
 				temp = ["", "", ""]
 			tempStr1 = self.e1.get()
 			tempStr2 = self.e2.get()
 			tempStr3 = self.e3.get()
-			print(temp)
+			print("temp"), temp
 			if(not(tempStr1 == "" or tempStr2 == "" or tempStr3 == "")):
 				if(temp[0] != tempStr1):
+					# print("tempStr1"), tempStr1
+					# print("stored"), self.cropData[self.cropIndex][0]
 					self.cropData[self.cropIndex][0] = tempStr1
 					print("storing"), tempStr1
 				if(temp[1] != tempStr2):
+					# print("tempStr2"), tempStr2
+					# print("stored"), self.cropData[self.cropIndex][1]
 					self.cropData[self.cropIndex][1] = tempStr2
 					print("storing"), tempStr2
 				if(temp[2] != tempStr3):
+					# print("tempStr3"), tempStr3
+					# print("stored"), self.cropData[self.cropIndex][2]
 					self.cropData[self.cropIndex][2] = tempStr3
 					print("storing"), tempStr3
 
 
 	def set_entry_data(self):
 		if self.mode != mode.orig:
-			print("crop")
+			if(self.cropIndex + 1 > len(self.cropData)):
+				print("extendo in set")
+				self.cropData.append(["", "", ""])
+			print("index"), self.cropIndex
+			print("text@index"), self.cropData[self.cropIndex]
 			if(not(self.cropData == [] or self.cropData[self.cropIndex] == [])):
 				temp = copy.copy(self.cropData[self.cropIndex])
 				self.clear_text_fields()
@@ -117,9 +129,7 @@ class img:
 					self.e2.insert(0, temp[1])
 				if(temp[2] != ""):
 					self.e3.insert(0, temp[2])
-				print("not empty")
 			else:
-				print("empty")
 				self.clear_text_fields()
 
 	def clear_text_fields(self):
