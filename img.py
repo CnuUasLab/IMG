@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 import Tkinter as tk
-from Tkinter import Label, Entry
+from Tkinter import Label, Entry, Button
 from PIL import Image, ImageTk
 import glob
 import sys
@@ -138,6 +138,7 @@ class img:
 		self.e3.delete(0, 'end')
 
 	def image_loop(self):
+		print "focus is:", str(self.window.focus_get().__class__)
 		self.show_image()
 		#self.lmain.after(100, lambda: self.lmain.focus_force())
 		self.lmain.after(250, self.image_loop)
@@ -175,6 +176,15 @@ class img:
 			self.e1.grid(row=1, column=2)
 			self.e2.grid(row=2, column=2)
 			self.e3.grid(row=3, column=2)
+
+			self.b = Button(self.sliderFrame, text="RF", command=self.return_focus)
+			self.b.pack()
+
+			self.b.grid(row=4, column=2)
+
+	def return_focus(self):
+		self.window.focus_force()
+		print "focus returned."
 
 	def update_curr_img_obj(self):
 		if len(self.origList) and self.mode == mode.orig:

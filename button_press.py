@@ -7,6 +7,9 @@ from var import mode
 # for keyboard cmds or for quiting
 def key_press(event, master, imgObj):
 
+    if str(master.window.focus_get().__class__) == "Tkinter.Entry":
+        return
+
     # if the 'r' key is pressed, reset the cropping region
     if event.keysym == 'r':
         print("points"), master.pts
