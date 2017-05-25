@@ -72,18 +72,6 @@ class img:
 		self.lmain = tk.Label(self.imageFrame)
 		self.lmain.grid(row=0, column=0)
 
-		Label(self.window, text="Color").grid(row=1, column=1)
-		Label(self.window, text="Shape").grid(row=2, column=1)
-		Label(self.window, text="Orientation").grid(row=3, column=1)
-
-		self.e1 = Entry(self.window)
-		self.e2 = Entry(self.window)
-		self.e3 = Entry(self.window)
-
-		self.e1.grid(row=1, column=2)
-		self.e2.grid(row=2, column=2)
-		self.e3.grid(row=3, column=2)
-
 		self.image_loop() # display image function
 
 		# bind the following three to the main loop
@@ -93,27 +81,32 @@ class img:
 
 		# run the main loop of tkinter
 		self.window.mainloop() #Starts GUI
+		# please tell me this commits
 
 	def get_entry_data(self):
-		print("one sec")
+		if self.mode != mode.orig:
+			# this hasn't been initialized yet, first element of cropData is []
+			temp = copy.copy(self.cropData[self.cropIndex])
+			if(temp == []):
+				print("setting temp to nothing")
+				temp = ["", "", ""]
+			tempStr1 = self.e1.get()
+			tempStr2 = self.e2.get()
+			tempStr3 = self.e3.get()
+			print(temp)
+			if(temp[0] != tempStr1):
+				self.cropData[self.cropIndex][0] = tempStr1
+				print("storing"), tempStr1
+			if(temp[1] != tempStr2):
+				self.cropData[self.cropIndex][1] = tempStr2
+				print("storing"), tempStr2
+			if(temp[2] != tempStr3):
+				self.cropData[self.cropIndex][2] = tempStr3
+				print("storing"), tempStr3
+
 
 	def set_entry_data(self):
-		if self.mode == mode.orig:
-			print("orig")
-			if(not(self.origData == [] or self.origData[self.origIndex] == [])):
-				temp = copy.copy(self.origData[self.origIndex])
-				self.clear_text_fields()
-				if(temp[0] != ""):
-					self.e1.insert(0, temp[0])
-				if(temp[1] != ""):
-					self.e2.insert(0, temp[1])
-				if(temp[2] != ""):
-					self.e3.insert(0, temp[2])
-				print("not empty")
-			else:
-				print("empty")
-				self.clear_text_fields()
-		else:
+		if self.mode != mode.orig:
 			print("crop")
 			if(not(self.cropData == [] or self.cropData[self.cropIndex] == [])):
 				temp = copy.copy(self.cropData[self.cropIndex])
@@ -135,9 +128,9 @@ class img:
 		self.e3.delete(0, 'end')
 
 	def image_loop(self):
-	    self.show_image()
-	    self.lmain.after(100, lambda: self.lmain.focus_force())
-	    self.lmain.after(250, self.image_loop)
+		self.show_image()
+		self.lmain.after(100, lambda: self.lmain.focus_force())
+		self.lmain.after(250, self.image_loop)
 
 	def show_image(self):
 		self.update_curr_img_obj()
@@ -153,14 +146,25 @@ class img:
 		self.lmain.configure(image=imgtk)
 
 	def setup_mode(self):
-	    if self.mode == mode.orig:
-	        self.sliderFrame.grid_forget()
-	        self.window.geometry("")
-	    else:
-	        #Slider window (slider controls stage position)
-	        self.sliderFrame = tk.Frame(self.window, width=800, height=400)
-	        self.sliderFrame.grid(row = 1, column=0, padx=10, pady=2)
-	        self.sliderFrame.config(background="RED")
+		if self.mode == mode.orig:
+			self.sliderFrame.grid_forget()
+			self.window.geometry("")
+		else:
+			#Slider window (slider controls stage position)
+			self.sliderFrame = tk.Frame(self.window, width=800, height=400)
+			self.sliderFrame.grid(row = 1, column=0, padx=10, pady=2)
+			self.sliderFrame.config(background="#FFFFFF")
+			Label(self.sliderFrame, text="Color").grid(row=1, column=1)
+			Label(self.sliderFrame, text="Shape").grid(row=2, column=1)
+			Label(self.sliderFrame, text="Orientation").grid(row=3, column=1)
+
+			self.e1 = Entry(self.sliderFrame)
+			self.e2 = Entry(self.sliderFrame)
+			self.e3 = Entry(self.sliderFrame)
+
+			self.e1.grid(row=1, column=2)
+			self.e2.grid(row=2, column=2)
+			self.e3.grid(row=3, column=2)
 
 	def update_curr_img_obj(self):
 		if len(self.origList) and self.mode == mode.orig:

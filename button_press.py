@@ -54,6 +54,7 @@ def key_press(event, master, imgObj):
                 master.update_curr_img_obj()
                 master.imageModified = False
                 master.setup_mode()
+                master.get_entry_data()
                 master.set_entry_data()
 
     # if the 'o' key is pressed, goto original :images list
@@ -66,6 +67,7 @@ def key_press(event, master, imgObj):
 
                 master.imageModified = False
                 master.setup_mode()
+                master.get_entry_data()
                 master.set_entry_data()
 
     #
@@ -80,6 +82,7 @@ def key_press(event, master, imgObj):
             image = master.origList[master.origIndex]
 
         master.imageModified = False
+        master.get_entry_data()
         master.set_entry_data()
     #
     elif event.keysym == 'm':
@@ -93,6 +96,7 @@ def key_press(event, master, imgObj):
             image = master.origList[master.origIndex]
 
         master.imageModfied = False
+        master.get_entry_data()
         master.set_entry_data()
         #reload_image()
 
