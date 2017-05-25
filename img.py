@@ -139,7 +139,7 @@ class img:
 
 	def image_loop(self):
 		self.show_image()
-		self.lmain.after(100, lambda: self.lmain.focus_force())
+		#self.lmain.after(100, lambda: self.lmain.focus_force())
 		self.lmain.after(250, self.image_loop)
 
 	def show_image(self):
