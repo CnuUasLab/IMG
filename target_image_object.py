@@ -17,16 +17,21 @@ class targ_img_obj(img_obj):
 
 	def crop_roi(self):
 		
+		# get the roi in a 400x400p image
 		roi = self.get_roi(0)
 
-		# this code applies to sub-cropping for greater accurracy
+		# update the images
 		self.imgLive = roi.copy()
 		self.imgCopy = roi.copy()
 
 		self.master.image_loop()
 	
 	def make_rectangle(self):
+
+		# only allow 1 red rectangle
 		self.reset()
+
+		# call the super method
 		img_obj.make_rectangle(self)
 
 	def get_data_for_interop(self):
