@@ -34,8 +34,7 @@ class img:
 		self.pts = []
 		self.imgW = 1200
 		self.imgH = 800
-		self.origData = [["string", "string2", "string3"], []]
-		self.cropData = [[], ["string", "string2", "string3"]]
+		self.cropData = [["string", "string2", "string3"], ["string4", "string5", "string6"]]
 
 		# null obj
 		self.currImgObj = img_obj(self, nullImg)
@@ -94,15 +93,16 @@ class img:
 			tempStr2 = self.e2.get()
 			tempStr3 = self.e3.get()
 			print(temp)
-			if(temp[0] != tempStr1):
-				self.cropData[self.cropIndex][0] = tempStr1
-				print("storing"), tempStr1
-			if(temp[1] != tempStr2):
-				self.cropData[self.cropIndex][1] = tempStr2
-				print("storing"), tempStr2
-			if(temp[2] != tempStr3):
-				self.cropData[self.cropIndex][2] = tempStr3
-				print("storing"), tempStr3
+			if(not(tempStr1 == "" or tempStr2 == "" or tempStr3 == "")):
+				if(temp[0] != tempStr1):
+					self.cropData[self.cropIndex][0] = tempStr1
+					print("storing"), tempStr1
+				if(temp[1] != tempStr2):
+					self.cropData[self.cropIndex][1] = tempStr2
+					print("storing"), tempStr2
+				if(temp[2] != tempStr3):
+					self.cropData[self.cropIndex][2] = tempStr3
+					print("storing"), tempStr3
 
 
 	def set_entry_data(self):
