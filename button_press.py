@@ -7,6 +7,7 @@ from var import mode
 # for keyboard cmds or for quiting
 def key_press(event, master, imgObj):
 
+    # reject key/mouse presses while focus is on entry fields
     if str(master.window.focus_get().__class__) == "Tkinter.Entry":
         return
 
