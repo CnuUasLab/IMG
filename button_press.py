@@ -92,6 +92,13 @@ def key_press(event, master, imgObj):
         master.imageModfied = False
         #reload_image()
 
+    # interop submission
+    elif event.keysym == 'z':
+        if len(master.cropList) != 0:
+            print "do interop things."
+        else:
+            print "no targets to submit"
+
     # if the 'q' key is pressed, break from the loop
     elif event.keysym == 'q':
         print "Exiting on q-press"
