@@ -9,7 +9,6 @@ from enum import Enum
 from button_press import key_press, mouse_press, mouse_release
 from image_object import img_obj as img_obj
 from var import mode
-import copy
 
 imgW = 1200
 imgH = 800
@@ -34,7 +33,6 @@ class img:
 		self.pts = []
 		self.imgW = 1200
 		self.imgH = 800
-		self.cropData = [["string", "string2", "string3"], ["string4", "string5", "string6"]]
 
 		# null obj
 		self.currImgObj = img_obj(self, nullImg)
@@ -80,62 +78,6 @@ class img:
 
 		# run the main loop of tkinter
 		self.window.mainloop() #Starts GUI
-		# please tell me this commits
-
-	def get_entry_data(self):
-		if self.mode != mode.orig:
-			if(self.cropIndex + 1 > len(self.cropData)):
-				print("extendo in get")
-				self.cropData.append(["", "", ""])
-			# this hasn't been initialized yet, first element of cropData is []
-			temp = copy.copy(self.cropData[self.cropIndex])
-			if(temp == []):
-				temp = ["", "", ""]
-			tempStr1 = self.e1.get()
-			tempStr2 = self.e2.get()
-			tempStr3 = self.e3.get()
-			print("temp"), temp
-			if(not(tempStr1 == "" or tempStr2 == "" or tempStr3 == "")):
-				if(temp[0] != tempStr1):
-					# print("tempStr1"), tempStr1
-					# print("stored"), self.cropData[self.cropIndex][0]
-					self.cropData[self.cropIndex][0] = tempStr1
-					print("storing"), tempStr1
-				if(temp[1] != tempStr2):
-					# print("tempStr2"), tempStr2
-					# print("stored"), self.cropData[self.cropIndex][1]
-					self.cropData[self.cropIndex][1] = tempStr2
-					print("storing"), tempStr2
-				if(temp[2] != tempStr3):
-					# print("tempStr3"), tempStr3
-					# print("stored"), self.cropData[self.cropIndex][2]
-					self.cropData[self.cropIndex][2] = tempStr3
-					print("storing"), tempStr3
-
-
-	def set_entry_data(self):
-		if self.mode != mode.orig:
-			if(self.cropIndex + 1 > len(self.cropData)):
-				print("extendo in set")
-				self.cropData.append(["", "", ""])
-			print("index"), self.cropIndex
-			print("text@index"), self.cropData[self.cropIndex]
-			if(not(self.cropData == [] or self.cropData[self.cropIndex] == [])):
-				temp = copy.copy(self.cropData[self.cropIndex])
-				self.clear_text_fields()
-				if(temp[0] != ""):
-					self.e1.insert(0, temp[0])
-				if(temp[1] != ""):
-					self.e2.insert(0, temp[1])
-				if(temp[2] != ""):
-					self.e3.insert(0, temp[2])
-			else:
-				self.clear_text_fields()
-
-	def clear_text_fields(self):
-		self.e1.delete(0, 'end')
-		self.e2.delete(0, 'end')
-		self.e3.delete(0, 'end')
 
 	def image_loop(self):
 		self.show_image()
@@ -168,17 +110,18 @@ class img:
 			Label(self.sliderFrame, text="Shape").grid(row=2, column=1)
 			Label(self.sliderFrame, text="Orientation").grid(row=3, column=1)
 
-			self.e1 = Entry(self.sliderFrame)
-			self.e2 = Entry(self.sliderFrame)
-			self.e3 = Entry(self.sliderFrame)
-			self.b = Button(self.sliderFrame, text="Return Focus", command=self.return_focus)
+			self.entryColor = Entry(self.sliderFrame)
+			self.entryShape = Entry(self.sliderFrame)
+			self.entryOrien = Entry(self.sliderFrame)
+			self.entryRF = Button(self.sliderFrame, text="Return Focus", command=self.return_focus)
 
-			self.e1.grid(row=1, column=2)
-			self.e2.grid(row=2, column=2)
-			self.e3.grid(row=3, column=2)
-			self.b.grid(row=4, column=2)
+			self.entryColor.grid(row=1, column=2)
+			self.entryShape.grid(row=2, column=2)
+			self.entryOrien.grid(row=3, column=2)
+			self.entryRF.grid(row=4, column=2)
 
 	def return_focus(self):
+		self.currImgObj.get_entry_data()
 		self.window.focus_force()
 		print "focus returned."
 
@@ -190,6 +133,8 @@ class img:
 		else:
 			# null obj
 			self.currImgObj = img_obj(self, nullImg)
+
+		return self.currImgObj
 
 def main():
 	app = img()

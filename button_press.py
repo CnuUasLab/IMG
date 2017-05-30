@@ -55,11 +55,11 @@ def key_press(event, master, imgObj):
             if len(master.cropList) > 0:
                 print "Entering cropped image list..."
                 master.mode = mode.cropped
-                master.update_curr_img_obj()
+
+                imgObj = master.update_curr_img_obj()
                 master.imageModified = False
                 master.setup_mode()
-                master.get_entry_data()
-                master.set_entry_data()
+                imgObj.set_entry_data()
 
     # if the 'o' key is pressed, goto original :images list
     elif event.keysym == 'o':
@@ -68,41 +68,35 @@ def key_press(event, master, imgObj):
             if len(master.origList) > 0:
                 print "Entering original image list..."
                 master.mode = mode.orig
-
+                
                 master.imageModified = False
                 master.setup_mode()
-                master.get_entry_data()
-                master.set_entry_data()
+                imgObj.set_entry_data()
 
     #
     elif event.keysym == 'n':
-        master.get_entry_data()
         if master.mode == mode.cropped:
             if master.cropIndex > 0:
                 master.cropIndex = master.cropIndex - 1
-
         else:
             if master.origIndex > 0:
                 master.origIndex = master.origIndex - 1
-            image = master.origList[master.origIndex]
 
         master.imageModified = False
-        master.set_entry_data()
+        imgObj = master.update_curr_img_obj()
+        imgObj.set_entry_data()
     #
     elif event.keysym == 'm':
-        master.get_entry_data()
         if master.mode == mode.cropped:
             if master.cropIndex < len(master.cropList) - 1:
                 master.cropIndex = master.cropIndex + 1
-
         else:
             if master.origIndex < len(master.origList) - 1:
                 master.origIndex = master.origIndex + 1
-            image = master.origList[master.origIndex]
 
         master.imageModfied = False
-        master.set_entry_data()
-        #reload_image()
+        imgObj = master.update_curr_img_obj()
+        imgObj.set_entry_data()
 
     # if the 'q' key is pressed, break from the loop
     elif event.keysym == 'q':

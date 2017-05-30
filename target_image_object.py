@@ -29,6 +29,22 @@ class targ_img_obj(img_obj):
 		self.reset()
 		img_obj.make_rectangle(self)
 
+	def get_entry_data(self):
+		self.colorBackground = self.master.entryColor.get()
+		self.shape = self.master.entryShape.get()
+		self.orientation = self.master.entryOrien.get()
+
+	def set_entry_data(self):
+		self.clear_entry_data()
+		self.master.entryColor.insert(0, self.colorBackground)
+		self.master.entryShape.insert(0, self.shape)
+		self.master.entryOrien.insert(0, self.orientation)
+
+	def clear_entry_data(self):
+		self.master.entryColor.delete(0, 'end')
+		self.master.entryShape.delete(0, 'end')
+		self.master.entryOrien.delete(0, 'end')
+
 	def get_data_for_interop(self):
 		# may not be needed
 		print "Placeholder, change as necessary"
