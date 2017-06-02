@@ -9,14 +9,20 @@ class targ_img_obj(img_obj):
 		self.imgLive = newImg.copy()
 		self.imgCopy = newImg.copy()
 
-		self.orientation = "0"
-		self.colorBackground = "Black"
-		self.colorLetter = "Black"
-		self.letter = "A"
-		self.shape = "Square"
+		self.entryType1 = ""
+		self.entryLat1 = ""
+		self.entryLong1 = ""
+		self.entryOrien1 = ""
+		self.entryShape1 = ""
+		self.entryBkColor1 = ""
+		self.entryAlpha1 = ""
+		self.entryAlphaColor1 = ""
+		self.entryDesc1 = ""
+		self.entryRF1 = ""
+
 
 	def crop_roi(self):
-		
+
 		roi = self.get_roi(0)
 
 		# this code applies to sub-cropping for greater accurracy
@@ -24,31 +30,49 @@ class targ_img_obj(img_obj):
 		self.imgCopy = roi.copy()
 
 		self.master.image_loop()
-	
+
 	def make_rectangle(self):
 		self.reset()
 		img_obj.make_rectangle(self)
 
 	def get_entry_data(self):
-		self.colorBackground = self.master.entryColor.get()
-		self.shape = self.master.entryShape.get()
-		self.orientation = self.master.entryOrien.get()
+		self.entryType1 = self.master.entryType.get()
+		self.entryLat1 = self.master.entryLat.get()
+		self.entryLong1 = self.master.entryLong.get()
+		self.entryOrien1 = self.master.entryOrien.get()
+		self.entryShape1 = self.master.entryShape.get()
+		self.entryBkColor1 = self.master.entryBkColor.get()
+		self.entryAlpha1 = self.master.entryAlpha.get()
+		self.entryAlphaColor1 = self.master.entryAlphaColor.get()
+		self.entryDesc1 = self.master.entryDesc.get()
+
 
 	def set_entry_data(self):
 		self.clear_entry_data()
-		self.master.entryColor.insert(0, self.colorBackground)
-		self.master.entryShape.insert(0, self.shape)
-		self.master.entryOrien.insert(0, self.orientation)
+		self.master.entryType.insert(0, self.entryType1)
+		self.master.entryLat.insert(0, self.entryLat1)
+		self.master.entryLong.insert(0, self.entryLong1)
+		self.master.entryOrien.insert(0, self.entryOrien1)
+		self.master.entryShape.insert(0, self.entryShape1)
+		self.master.entryBkColor.insert(0, self.entryBkColor1)
+		self.master.entryAlpha.insert(0, self.entryAlpha1)
+		self.master.entryAlphaColor.insert(0, self.entryAlphaColor1)
+		self.master.entryDesc.insert(0, self.entryDesc1)
 
 	def clear_entry_data(self):
-		self.master.entryColor.delete(0, 'end')
-		self.master.entryShape.delete(0, 'end')
+		self.master.entryType.delete(0, 'end')
+		self.master.entryLat.delete(0, 'end')
+		self.master.entryLong.delete(0, 'end')
 		self.master.entryOrien.delete(0, 'end')
+		self.master.entryShape.delete(0, 'end')
+		self.master.entryBkColor.delete(0, 'end')
+		self.master.entryAlpha.delete(0, 'end')
+		self.master.entryAlphaColor.delete(0, 'end')
+		self.master.entryDesc.delete(0, 'end')
 
 	def get_data_for_interop(self):
 		# may not be needed
 		print "Placeholder, change as necessary"
-		return (self.orientation, self.colorBackground, self.colorLetter, self.letter, self.shape)
-
-
-
+		return (self.entryType1, self.entryLat1, self.entryLat1, self.entryLong1,
+		self.entryOrien1, self.entryShape1, self.entryBkColor1, self.entryAlpha1,
+		self.entryAlphaColor1, self.entryDesc1)
