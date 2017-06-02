@@ -10,16 +10,16 @@ class targ_img_obj(img_obj):
 		self.imgLive = newImg.copy()
 		self.imgCopy = newImg.copy()
 
-		self.entryType1 = ""
-		self.entryLat1 = ""
-		self.entryLong1 = ""
-		self.entryOrien1 = ""
-		self.entryShape1 = ""
-		self.entryBkColor1 = ""
-		self.entryAlpha1 = ""
-		self.entryAlphaColor1 = ""
-		self.entryDesc1 = ""
-		self.entryRF1 = ""
+		self.type = ""
+		self.lat = ""
+		self.long = ""
+		self.orien = ""
+		self.shape = ""
+		self.bkColor = ""
+		self.alpha = ""
+		self.alphaColor = ""
+		self.desc = ""
+		self.RF = ""
 
 		self.orien = {'N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'}
 		self.shapes = {'circle', 'semicircle', 'quarter_circle', 'triangle',
@@ -44,27 +44,27 @@ class targ_img_obj(img_obj):
 		img_obj.make_rectangle(self)
 
 	def get_entry_data(self):
-		self.entryType1 = self.master.entryType.get()
-		self.entryLat1 = self.master.entryLat.get()
-		self.entryLong1 = self.master.entryLong.get()
-		self.entryOrien1 = self.master.entryOrien.get()
-		self.entryShape1 = self.master.entryShape.get()
-		self.entryBkColor1 = self.master.entryBkColor.get()
-		self.entryAlpha1 = self.master.entryAlpha.get()
-		self.entryAlphaColor1 = self.master.entryAlphaColor.get()
-		self.entryDesc1 = self.master.entryDesc.get()
+		self.type = self.master.entryType.get()
+		self.lat = self.master.entryLat.get()
+		self.long = self.master.entryLong.get()
+		self.orien = self.master.entryOrien.get()
+		self.shape = self.master.entryShape.get()
+		self.bkColor = self.master.entryBkColor.get()
+		self.alpha = self.master.entryAlpha.get()
+		self.alphaColor = self.master.entryAlphaColor.get()
+		self.desc = self.master.entryDesc.get()
 
 	def set_entry_data(self):
 		self.clear_entry_data()
-		self.master.entryType.insert(0, self.entryType1)
-		self.master.entryLat.insert(0, self.entryLat1)
-		self.master.entryLong.insert(0, self.entryLong1)
-		self.master.entryOrien.insert(0, self.entryOrien1)
-		self.master.entryShape.insert(0, self.entryShape1)
-		self.master.entryBkColor.insert(0, self.entryBkColor1)
-		self.master.entryAlpha.insert(0, self.entryAlpha1)
-		self.master.entryAlphaColor.insert(0, self.entryAlphaColor1)
-		self.master.entryDesc.insert(0, self.entryDesc1)
+		self.master.entryType.insert(0, self.type)
+		self.master.entryLat.insert(0, self.lat)
+		self.master.entryLong.insert(0, self.long)
+		self.master.entryOrien.insert(0, self.orien)
+		self.master.entryShape.insert(0, self.shape)
+		self.master.entryBkColor.insert(0, self.bkColor)
+		self.master.entryAlpha.insert(0, self.alpha)
+		self.master.entryAlphaColor.insert(0, self.alphaColor)
+		self.master.entryDesc.insert(0, self.desc)
 
 	def clear_entry_data(self):
 		self.master.entryType.delete(0, 'end')
@@ -78,16 +78,15 @@ class targ_img_obj(img_obj):
 		self.master.entryDesc.delete(0, 'end')
 
 	def make_json(self):
-		help = {'type': self.entryType1, 'latitude': self.entryLat1,
-		'longitude': self.entryLong1, 'orientation': self.entryOrien1, 'shape': self.entryShape1,
-		'background_color': self.entryBkColor1, 'alphanumeric': self.entryAlpha1,
-		'alphanumeric_color': self.entryAlphaColor1, 'description': self.entryDesc1}
+		help = {'type': self.type, 'latitude': self.lat,
+		'longitude': self.long, 'orientation': self.orien, 'shape': self.shape,
+		'background_color': self.bkColor, 'alphanumeric': self.alpha,
+		'alphanumeric_color': self.alphaColor, 'description': self.desc}
 		plswork_json = json.dumps(help)
 		print(plswork_json)
 
 	def get_data_for_interop(self):
 		# may not be needed
 		print "Placeholder, change as necessary"
-		return (self.entryType1, self.entryLat1, self.entryLat1, self.entryLong1,
-		self.entryOrien1, self.entryShape1, self.entryBkColor1, self.entryAlpha1,
-		self.entryAlphaColor1, self.entryDesc1)
+		return (self.type, self.lat, self.long, self.orien, self.shape, self.bkColor, self.alpha,
+		self.alphaColor, self.desc)
