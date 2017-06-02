@@ -68,12 +68,12 @@ def key_press(event, master, imgObj):
             if len(master.origList) > 0:
                 print "Entering original image list..."
                 master.mode = mode.orig
-                
+
                 master.imageModified = False
                 master.setup_mode()
                 imgObj.set_entry_data()
 
-    #
+    # if the 'n' key is pressed, goto prev image
     elif event.keysym == 'n':
         if master.mode == mode.cropped:
             if master.cropIndex > 0:
@@ -85,7 +85,8 @@ def key_press(event, master, imgObj):
         master.imageModified = False
         imgObj = master.update_curr_img_obj()
         imgObj.set_entry_data()
-    #
+
+    # if the 'm' key is pressed, goto next image
     elif event.keysym == 'm':
         if master.mode == mode.cropped:
             if master.cropIndex < len(master.cropList) - 1:
@@ -97,6 +98,12 @@ def key_press(event, master, imgObj):
         master.imageModfied = False
         imgObj = master.update_curr_img_obj()
         imgObj.set_entry_data()
+
+    # if the 'x' key is pressed, export the characteristics of a target in json
+    elif event.keysym == 'x':
+        if master.mode == mode.cropped:
+            imgObj = master.update_curr_img_obj()
+            imgObj.make_json()
 
     # if the 'q' key is pressed, break from the loop
     elif event.keysym == 'q':

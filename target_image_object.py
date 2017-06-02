@@ -1,4 +1,5 @@
 from image_object import *
+import json
 
 # inherited object from parent img_obj
 class targ_img_obj(img_obj):
@@ -19,6 +20,13 @@ class targ_img_obj(img_obj):
 		self.entryAlphaColor1 = ""
 		self.entryDesc1 = ""
 		self.entryRF1 = ""
+
+		self.orien = {'N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'}
+		self.shapes = {'circle', 'semicircle', 'quarter_circle', 'triangle',
+		'square', 'rectangle', 'trapezoid', 'pentagon', 'hexagon', 'heptagon',
+		'octagon', 'star', 'cross'}
+		self.colors = {'white', 'black', 'gray', 'red', 'blue', 'green', 'yellow',
+		'purple', 'brown', 'orange'}
 
 
 	def crop_roi(self):
@@ -46,7 +54,6 @@ class targ_img_obj(img_obj):
 		self.entryAlphaColor1 = self.master.entryAlphaColor.get()
 		self.entryDesc1 = self.master.entryDesc.get()
 
-
 	def set_entry_data(self):
 		self.clear_entry_data()
 		self.master.entryType.insert(0, self.entryType1)
@@ -69,6 +76,14 @@ class targ_img_obj(img_obj):
 		self.master.entryAlpha.delete(0, 'end')
 		self.master.entryAlphaColor.delete(0, 'end')
 		self.master.entryDesc.delete(0, 'end')
+
+	def make_json(self):
+		help = {'type': self.entryType1, 'latitude': self.entryLat1,
+		'longitude': self.entryLong1, 'orientation': self.entryOrien1, 'shape': self.entryShape1,
+		'background_color': self.entryBkColor1, 'alphanumeric': self.entryAlpha1,
+		'alphanumeric_color': self.entryAlphaColor1, 'description': self.entryDesc1}
+		plswork_json = json.dumps(help)
+		print(plswork_json)
 
 	def get_data_for_interop(self):
 		# may not be needed
