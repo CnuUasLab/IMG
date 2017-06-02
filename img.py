@@ -15,6 +15,10 @@ imgH = 800
 
 nullImg = np.zeros((1,1,3), np.uint8)
 
+fontEntrySize = 20
+fontLabelSize = 16
+fontType = "Courier"
+
 class img:
 
 	def __init__(self):
@@ -31,8 +35,8 @@ class img:
 		self.pt0 = 0,0
 		self.pt1 = 0,0
 		self.pts = []
-		self.imgW = 1200
-		self.imgH = 800
+		self.imgW = imgW
+		self.imgH = imgH
 
 		# null obj
 		self.currImgObj = img_obj(self, nullImg)
@@ -103,19 +107,19 @@ class img:
 			self.window.geometry("")
 		else:
 			#Slider window (slider controls stage position)
+
 			self.sliderFrame = tk.Frame(self.window, width=800, height=400)
 			self.sliderFrame.grid(row = 1, column=0, padx=10, pady=2)
 			self.sliderFrame.config(background="#FFFFFF")
-			Label(self.sliderFrame, text="Type").grid(row=1, column=1)
-			Label(self.sliderFrame, text="Latitude").grid(row=2, column=1)
-			Label(self.sliderFrame, text="Longitude").grid(row=3, column=1)
-			Label(self.sliderFrame, text="Orientation").grid(row=4, column=1)
-			Label(self.sliderFrame, text="Shape").grid(row=5, column=1)
-			Label(self.sliderFrame, text="Background Color").grid(row=6, column=1)
-			Label(self.sliderFrame, text="Alphanumeric").grid(row=7, column=1)
-			Label(self.sliderFrame, text="Alphanumeric Color").grid(row=8, column=1)
-			Label(self.sliderFrame, text="Description").grid(row=9, column=1)
-
+			Label(self.sliderFrame, text="Type".rjust(20), font=(fontType, fontLabelSize)).grid(row=1, column=1)
+			Label(self.sliderFrame, text="Latitude".rjust(20), font=(fontType, fontLabelSize)).grid(row=2, column=1)
+			Label(self.sliderFrame, text="Longitude".rjust(20), font=(fontType, fontLabelSize)).grid(row=3, column=1)
+			Label(self.sliderFrame, text="Orientation".rjust(20), font=(fontType, fontLabelSize)).grid(row=4, column=1)
+			Label(self.sliderFrame, text="Shape".rjust(20), font=(fontType, fontLabelSize)).grid(row=5, column=1)
+			Label(self.sliderFrame, text="Background Color".rjust(20), font=(fontType, fontLabelSize)).grid(row=6, column=1)
+			Label(self.sliderFrame, text="Alphanumeric".rjust(20), font=(fontType, fontLabelSize)).grid(row=7, column=1)
+			Label(self.sliderFrame, text="Alphanumeric Color".rjust(20), font=(fontType, fontLabelSize)).grid(row=8, column=1)
+			Label(self.sliderFrame, text="Description".rjust(20), font=(fontType, fontLabelSize)).grid(row=9, column=1)
 
 			self.entryType = Entry(self.sliderFrame)
 			self.entryLat = Entry(self.sliderFrame)
@@ -138,6 +142,17 @@ class img:
 			self.entryAlphaColor.grid(row=8, column=2)
 			self.entryDesc.grid(row=9, column=2)
 			self.entryRF.grid(row=10, column=2)
+
+			self.entryType.config(font=(fontType, fontEntrySize))
+			self.entryLat.config(font=(fontType, fontEntrySize))
+			self.entryLong.config(font=(fontType, fontEntrySize))
+			self.entryOrien.config(font=(fontType, fontEntrySize))
+			self.entryShape.config(font=(fontType, fontEntrySize))
+			self.entryBkColor.config(font=(fontType, fontEntrySize))
+			self.entryAlpha.config(font=(fontType, fontEntrySize))
+			self.entryAlphaColor.config(font=(fontType, fontEntrySize))
+			self.entryDesc.config(font=(fontType, fontEntrySize))
+			self.entryRF.config(font=(fontType, fontEntrySize))
 
 	def return_focus(self):
 		self.currImgObj.get_entry_data()
