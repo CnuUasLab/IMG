@@ -119,6 +119,8 @@ def key_press(event, master, imgObj):
                 # if currently on first image and only one image, delete current and go back to orig list
                 master.cropList.pop(master.cropIndex)
                 master.mode = mode.orig
+            imgObj = master.update_curr_img_obj()
+            imgObj.set_entry_data()
 
     # if the 'q' key is pressed, break from the loop
     elif event.keysym == 'q':
