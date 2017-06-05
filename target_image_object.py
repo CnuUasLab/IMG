@@ -21,14 +21,6 @@ class targ_img_obj(img_obj):
 		self.desc = ""
 		self.RF = ""
 
-		self.orienVals = {'N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'}
-		self.shapeVals = {'circle', 'semicircle', 'quarter_circle', 'triangle',
-		'square', 'rectangle', 'trapezoid', 'pentagon', 'hexagon', 'heptagon',
-		'octagon', 'star', 'cross'}
-		self.colorCVals = {'white', 'black', 'gray', 'red', 'blue', 'green', 'yellow',
-		'purple', 'brown', 'orange'}
-
-
 	def crop_roi(self):
 
 		roi = self.get_roi(0)
