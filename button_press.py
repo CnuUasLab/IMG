@@ -105,6 +105,21 @@ def key_press(event, master, imgObj):
             imgObj = master.update_curr_img_obj()
             imgObj.make_json()
 
+    elif event.keysym == 'd':
+        if master.mode == mode.cropped:
+            if master.cropIndex > 0:
+                # if not currently on first image, delete current image and move it back one index
+                master.cropList.pop(master.cropIndex)
+                master.cropIndex = master.cropIndex - 1
+            elif master.cropIndex == 0 and len(master.cropList) > 1:
+                # if currently on first image, but more than one image in list, delete current and move to next image
+                master.cropList.pop(master.cropIndex)
+                master.cropIndex = master.cropIndex + 1
+            elif master.cropIndex == 0 and len(master.cropList) == 1:
+                # if currently on first image and only one image, delete current and go back to orig list
+                master.cropList.pop(master.cropIndex)
+                master.mode = mode.orig
+
     # if the 'q' key is pressed, break from the loop
     elif event.keysym == 'q':
         print "Exiting on q-press"
