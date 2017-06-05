@@ -21,11 +21,11 @@ class targ_img_obj(img_obj):
 		self.desc = ""
 		self.RF = ""
 
-		self.orien = {'N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'}
-		self.shapes = {'circle', 'semicircle', 'quarter_circle', 'triangle',
+		self.orienVals = {'N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'}
+		self.shapeVals = {'circle', 'semicircle', 'quarter_circle', 'triangle',
 		'square', 'rectangle', 'trapezoid', 'pentagon', 'hexagon', 'heptagon',
 		'octagon', 'star', 'cross'}
-		self.colors = {'white', 'black', 'gray', 'red', 'blue', 'green', 'yellow',
+		self.colorCVals = {'white', 'black', 'gray', 'red', 'blue', 'green', 'yellow',
 		'purple', 'brown', 'orange'}
 
 
@@ -47,11 +47,11 @@ class targ_img_obj(img_obj):
 		self.type = self.master.entryType.get()
 		self.lat = self.master.entryLat.get()
 		self.long = self.master.entryLong.get()
-		self.orien = self.master.entryOrien.get()
-		self.shape = self.master.entryShape.get()
-		self.bkColor = self.master.entryBkColor.get()
+		self.orien = self.master.orientationValue.get()
+		self.shape = self.master.shapeValue.get()
+		self.bkColor = self.master.bkColorValue.get()
 		self.alpha = self.master.entryAlpha.get()
-		self.alphaColor = self.master.entryAlphaColor.get()
+		self.alphaColor = self.master.alphaColorValue.get()
 		self.desc = self.master.entryDesc.get()
 
 	def set_entry_data(self):
@@ -59,22 +59,22 @@ class targ_img_obj(img_obj):
 		self.master.entryType.insert(0, self.type)
 		self.master.entryLat.insert(0, self.lat)
 		self.master.entryLong.insert(0, self.long)
-		self.master.entryOrien.insert(0, self.orien)
-		self.master.entryShape.insert(0, self.shape)
-		self.master.entryBkColor.insert(0, self.bkColor)
+		self.master.orientationValue.set(self.orien)
+		self.master.shapeValue.set(self.shape)
+		self.master.bkColorValue.set(self.bkColor)
 		self.master.entryAlpha.insert(0, self.alpha)
-		self.master.entryAlphaColor.insert(0, self.alphaColor)
+		self.master.alphaColorValue.set(self.alphaColor)
 		self.master.entryDesc.insert(0, self.desc)
 
 	def clear_entry_data(self):
 		self.master.entryType.delete(0, 'end')
 		self.master.entryLat.delete(0, 'end')
 		self.master.entryLong.delete(0, 'end')
-		self.master.entryOrien.delete(0, 'end')
-		self.master.entryShape.delete(0, 'end')
-		self.master.entryBkColor.delete(0, 'end')
+		self.master.orientationValue.set(self.master.orienVals[0])
+		self.master.shapeValue.set(self.master.shapeVals[0])
+		self.master.bkColorValue.set(self.master.colorVals[0])
 		self.master.entryAlpha.delete(0, 'end')
-		self.master.entryAlphaColor.delete(0, 'end')
+		self.master.alphaColorValue.set(self.master.colorVals[0])
 		self.master.entryDesc.delete(0, 'end')
 
 	def make_json(self):

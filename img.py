@@ -37,6 +37,12 @@ class img:
 		self.pts = []
 		self.imgW = imgW
 		self.imgH = imgH
+		self.orienVals = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
+		self.shapeVals = ["circle", "semicircle", "quarter_circle", "triangle",
+		"square", "rectangle", "trapezoid", "pentagon", "hexagon", "heptagon",
+		"octagon", "star", "cross"]
+		self.colorVals = ["white", "black", "gray", "red", "blue", "green", "yellow",
+		"purple", "brown", "orange"]
 
 		# null obj
 		self.currImgObj = img_obj(self, nullImg)
@@ -121,36 +127,50 @@ class img:
 			Label(self.sliderFrame, text="Alphanumeric Color".rjust(20), font=(fontType, fontLabelSize)).grid(row=8, column=1)
 			Label(self.sliderFrame, text="Description".rjust(20), font=(fontType, fontLabelSize)).grid(row=9, column=1)
 
+			self.orientationValue = tk.StringVar(self.sliderFrame)
+			self.orientationValue.set("N")
+			self.shapeValue = tk.StringVar(self.sliderFrame)
+			self.shapeValue.set("circle")
+			self.bkColorValue = tk.StringVar(self.sliderFrame)
+			self.bkColorValue.set("white")
+			self.alphaColorValue = tk.StringVar(self.sliderFrame)
+			self.alphaColorValue.set("white")
+
 			self.entryType = Entry(self.sliderFrame)
 			self.entryLat = Entry(self.sliderFrame)
 			self.entryLong = Entry(self.sliderFrame)
-			self.entryOrien = Entry(self.sliderFrame)
-			self.entryShape = Entry(self.sliderFrame)
-			self.entryBkColor = Entry(self.sliderFrame)
+			# self.entryOrien = Entry(self.sliderFrame)
+			self.optionOrien = tk.OptionMenu(self.sliderFrame, self.orientationValue, *self.orienVals)
+			self.optionOrien.pack()
+			# self.entryShape = Entry(self.sliderFrame)
+			self.optionShape = tk.OptionMenu(self.sliderFrame, self.shapeValue, *self.shapeVals)
+			# self.entryBkColor = Entry(self.sliderFrame)
+			self.optionBkColor = tk.OptionMenu(self.sliderFrame, self.bkColorValue, *self.colorVals)
 			self.entryAlpha = Entry(self.sliderFrame)
-			self.entryAlphaColor = Entry(self.sliderFrame)
+			# self.entryAlphaColor = Entry(self.sliderFrame)
+			self.optionAlphaColor = tk.OptionMenu(self.sliderFrame, self.alphaColorValue, *self.colorVals)
 			self.entryDesc = Entry(self.sliderFrame)
 			self.entryRF = Button(self.sliderFrame, text="Return Focus", command=self.return_focus)
 
 			self.entryType.grid(row=1, column=2)
 			self.entryLat.grid(row=2, column=2)
 			self.entryLong.grid(row=3, column=2)
-			self.entryOrien.grid(row=4, column=2)
-			self.entryShape.grid(row=5, column=2)
-			self.entryBkColor.grid(row=6, column=2)
+			self.optionOrien.grid(row=4, column=2)
+			self.optionShape.grid(row=5, column=2)
+			self.optionBkColor.grid(row=6, column=2)
 			self.entryAlpha.grid(row=7, column=2)
-			self.entryAlphaColor.grid(row=8, column=2)
+			self.optionAlphaColor.grid(row=8, column=2)
 			self.entryDesc.grid(row=9, column=2)
 			self.entryRF.grid(row=10, column=2)
 
 			self.entryType.config(font=(fontType, fontEntrySize))
 			self.entryLat.config(font=(fontType, fontEntrySize))
 			self.entryLong.config(font=(fontType, fontEntrySize))
-			self.entryOrien.config(font=(fontType, fontEntrySize))
-			self.entryShape.config(font=(fontType, fontEntrySize))
-			self.entryBkColor.config(font=(fontType, fontEntrySize))
+			self.optionOrien.config(font=(fontType, fontEntrySize))
+			self.optionShape.config(font=(fontType, fontEntrySize))
+			self.optionBkColor.config(font=(fontType, fontEntrySize))
 			self.entryAlpha.config(font=(fontType, fontEntrySize))
-			self.entryAlphaColor.config(font=(fontType, fontEntrySize))
+			self.optionAlphaColor.config(font=(fontType, fontEntrySize))
 			self.entryDesc.config(font=(fontType, fontEntrySize))
 			self.entryRF.config(font=(fontType, fontEntrySize))
 
