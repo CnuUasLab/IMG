@@ -21,7 +21,11 @@ P   goto Processed image list
 N   Previous image
 M   Next image
 
+D   Deletes current image in crop list
+
 C   Crop regions of interests (red boxes)
 R   Reset ROIs
 L   List ROI points (for debugging)
+
+X   Prints out json to command line
 ```
