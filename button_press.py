@@ -105,6 +105,7 @@ def key_press(event, master, imgObj):
             imgObj = master.update_curr_img_obj()
             imgObj.make_json()
 
+    # if d is pressed, it removes image from cropped image list (may need to be expanded to original list)
     elif event.keysym == 'd':
         if master.mode == mode.cropped:
             if master.cropIndex > 0:

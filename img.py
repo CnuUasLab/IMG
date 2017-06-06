@@ -22,7 +22,6 @@ fontType = "Courier"
 class img:
 
 	def __init__(self):
-		print self
 		self.cropList = []
 		self.origList = []
 		self.origIndex = -1
@@ -97,14 +96,10 @@ class img:
 	def show_image(self):
 		self.update_curr_img_obj()
 		liveImage = self.currImgObj.get_image_live()
-
 		cv2image = cv2.cvtColor(liveImage, cv2.COLOR_BGR2RGBA)
-
 		tempImage = Image.fromarray(cv2image)
-
 		imgtk = ImageTk.PhotoImage(image=tempImage)
 		self.lmain.imgtk = imgtk
-
 		self.lmain.configure(image=imgtk)
 
 	def setup_mode(self):
@@ -113,7 +108,6 @@ class img:
 			self.window.geometry("")
 		else:
 			#Slider window (slider controls stage position)
-
 			self.sliderFrame = tk.Frame(self.window, width=800, height=400)
 			self.sliderFrame.grid(row = 1, column=0, padx=10, pady=2)
 			self.sliderFrame.config(background="#FFFFFF")
@@ -139,15 +133,10 @@ class img:
 			self.entryType = Entry(self.sliderFrame)
 			self.entryLat = Entry(self.sliderFrame)
 			self.entryLong = Entry(self.sliderFrame)
-			# self.entryOrien = Entry(self.sliderFrame)
 			self.optionOrien = tk.OptionMenu(self.sliderFrame, self.orientationValue, *self.orienVals)
-			self.optionOrien.pack()
-			# self.entryShape = Entry(self.sliderFrame)
 			self.optionShape = tk.OptionMenu(self.sliderFrame, self.shapeValue, *self.shapeVals)
-			# self.entryBkColor = Entry(self.sliderFrame)
 			self.optionBkColor = tk.OptionMenu(self.sliderFrame, self.bkColorValue, *self.colorVals)
 			self.entryAlpha = Entry(self.sliderFrame)
-			# self.entryAlphaColor = Entry(self.sliderFrame)
 			self.optionAlphaColor = tk.OptionMenu(self.sliderFrame, self.alphaColorValue, *self.colorVals)
 			self.entryDesc = Entry(self.sliderFrame)
 			self.entryRF = Button(self.sliderFrame, text="Return Focus", command=self.return_focus)

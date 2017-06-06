@@ -22,9 +22,7 @@ class targ_img_obj(img_obj):
 		self.RF = ""
 
 	def crop_roi(self):
-
 		roi = self.get_roi(0)
-
 		# this code applies to sub-cropping for greater accurracy
 		self.imgLive = roi.copy()
 		self.imgCopy = roi.copy()
@@ -35,6 +33,7 @@ class targ_img_obj(img_obj):
 		self.reset()
 		img_obj.make_rectangle(self)
 
+	# gets data from entry fields/dropdowns
 	def get_entry_data(self):
 		self.type = self.master.entryType.get()
 		self.lat = self.master.entryLat.get()
@@ -46,6 +45,7 @@ class targ_img_obj(img_obj):
 		self.alphaColor = self.master.alphaColorValue.get()
 		self.desc = self.master.entryDesc.get()
 
+	# sets data in entry fields/dropdowns
 	def set_entry_data(self):
 		self.clear_entry_data()
 		self.master.entryType.insert(0, self.type)
@@ -58,6 +58,7 @@ class targ_img_obj(img_obj):
 		self.master.alphaColorValue.set(self.alphaColor)
 		self.master.entryDesc.insert(0, self.desc)
 
+	# clears entry fields/dropdowns
 	def clear_entry_data(self):
 		self.master.entryType.delete(0, 'end')
 		self.master.entryLat.delete(0, 'end')
@@ -69,6 +70,7 @@ class targ_img_obj(img_obj):
 		self.master.alphaColorValue.set(self.master.colorVals[0])
 		self.master.entryDesc.delete(0, 'end')
 
+	# builds json and prints it out (not finished)
 	def make_json(self):
 		help = {'type': self.type, 'latitude': self.lat,
 		'longitude': self.long, 'orientation': self.orien, 'shape': self.shape,
