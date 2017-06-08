@@ -71,7 +71,11 @@ class img:
 		self.update_curr_img_obj()
 
 	def import_images_alt(self):
+		# *******************************************************
+		#
 		# uncomment this line to clear the list of images on open
+		# 
+		# *******************************************************
 		# self.origList = []
 		path = tkFileDialog.askdirectory()
 		if os.path.exists(path):

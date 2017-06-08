@@ -1,4 +1,7 @@
 from image_object import *
+from datetime import datetime
+import PIL.Image
+import cv2
 import json
 
 # inherited object from parent img_obj
@@ -77,8 +80,26 @@ class targ_img_obj(img_obj):
 		'longitude': self.long, 'orientation': self.orien, 'shape': self.shape,
 		'background_color': self.bkColor, 'alphanumeric': self.alpha,
 		'alphanumeric_color': self.alphaColor, 'description': self.desc}
-		plswork_json = json.dumps(help)
-		print(plswork_json)
+
+		# not necessary, just for testing
+		time = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
+
+		# TODO make this path write to the right location
+		path = ''
+
+		filename = path + 'data' + str(self.master.cropIndex) + '_' + time + '.json'
+
+		with open(filename, 'w') as outfile:
+			json.dump(help, outfile)
+			print filename
+
+		imagename = "image" + str(self.master.cropIndex) + '_' + time + '.png'
+
+		# img = PIL.Image.open(self.master.cropList[self.master.cropIndex])
+		# img.save(imagename)
+		# img.write('some_name.png', format='png')
+		# cv2.imwrite('Image.jpg', img)
+
 
 	def get_data_for_interop(self):
 		# may not be needed
