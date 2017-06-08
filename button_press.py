@@ -84,7 +84,8 @@ def key_press(event, master, imgObj):
 
         master.imageModified = False
         imgObj = master.update_curr_img_obj()
-        imgObj.set_entry_data()
+        if master.mode == mode.cropped:
+            imgObj.set_entry_data()
 
     # if the 'm' key is pressed, goto next image
     elif event.keysym == 'm':
@@ -97,7 +98,8 @@ def key_press(event, master, imgObj):
 
         master.imageModfied = False
         imgObj = master.update_curr_img_obj()
-        imgObj.set_entry_data()
+        if master.mode == mode.cropped:
+            imgObj.set_entry_data()
 
     # if the 'x' key is pressed, export the characteristics of a target in json
     elif event.keysym == 'x':
@@ -122,6 +124,11 @@ def key_press(event, master, imgObj):
                 master.mode = mode.orig
             imgObj = master.update_curr_img_obj()
             imgObj.set_entry_data()
+
+    # if the 'a' key is pressed, gives option to open new directory to for images
+    elif event.keysym == 'a':
+        if master.mode == mode.orig:
+            master.import_images_alt()
 
     # if the 'q' key is pressed, break from the loop
     elif event.keysym == 'q':

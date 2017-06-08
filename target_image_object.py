@@ -29,6 +29,7 @@ class targ_img_obj(img_obj):
 
 		self.master.image_loop()
 
+	# makes rectangle?? davis help
 	def make_rectangle(self):
 		self.reset()
 		img_obj.make_rectangle(self)

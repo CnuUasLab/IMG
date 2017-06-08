@@ -2,6 +2,8 @@ import numpy as np
 import cv2
 import Tkinter as tk
 from Tkinter import Label, Entry, Button
+from Tkinter import *
+import Tkinter, Tkconstants, tkFileDialog
 from PIL import Image, ImageTk
 import glob
 import sys
@@ -9,6 +11,7 @@ from enum import Enum
 from button_press import key_press, mouse_press, mouse_release
 from image_object import img_obj as img_obj
 from var import mode
+import os
 
 imgW = 1200
 imgH = 800
@@ -66,6 +69,29 @@ class img:
 		if self.numOrig > 0 and self.origIndex < 0:
 			self.origIndex = 0
 		self.update_curr_img_obj()
+
+	def import_images_alt(self):
+		# uncomment this line to clear the list of images on open
+		# self.origList = []
+		path = tkFileDialog.askdirectory()
+		if os.path.exists(path):
+			path += '/*.jpg'
+			for filename in glob.glob(path):
+				img = cv2.imread(filename)
+				img = cv2.resize(img, (imgW, imgH))
+				image_obj = img_obj(self, img)
+
+				self.origList.append(image_obj)
+				self.numOrig = self.numOrig + 1
+
+				print "image imported",filename
+
+			if self.numOrig > 0 and self.origIndex < 0:
+				self.origIndex = 0
+			self.update_curr_img_obj()
+		else:
+			print "path does not exist, opening default dir"
+			self.import_images()
 
 	def setup_GUI(self):
 		self.window.wm_title("Image Manipulation Genie (IMG)")

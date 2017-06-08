@@ -28,4 +28,6 @@ R   Reset ROIs
 L   List ROI points (for debugging)
 
 X   Prints out json to command line
+
+A   Opens window to select alternate directory
 ```
