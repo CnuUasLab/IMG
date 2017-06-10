@@ -91,14 +91,9 @@ class targ_img_obj(img_obj):
 
 		with open(filename, 'w') as outfile:
 			json.dump(help, outfile)
-			print filename
 
 		imagename = "image" + str(self.master.cropIndex) + '_' + time + '.png'
-
-		# img = PIL.Image.open(self.master.cropList[self.master.cropIndex])
-		# img.save(imagename)
-		# img.write('some_name.png', format='png')
-		# cv2.imwrite('Image.jpg', img)
+		cv2.imwrite(imagename, self.imgLive)
 
 
 	def get_data_for_interop(self):
