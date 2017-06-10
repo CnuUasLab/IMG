@@ -27,7 +27,7 @@ C   Crop regions of interests (red boxes)
 R   Reset ROIs
 L   List ROI points (for debugging)
 
-X   Prints out json to command line
+X   Saves json file and image for current image
 
 A   Opens window to select alternate directory
 ```
