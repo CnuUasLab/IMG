@@ -1,5 +1,6 @@
 import socket
 import os
+import thread
 
 class IMGSocket():
     def __init__(self):
@@ -8,6 +9,9 @@ class IMGSocket():
         self.server.listen(5)
         
         self.client_socket, self.address = server_socket.accept()
+        
+        # Start socket stream on server.
+        thread.start_new_thread(self.startSocketStream, ())
 
     def startSocketStream(self):
         while(True):
