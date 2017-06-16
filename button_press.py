@@ -72,16 +72,13 @@ def key_press(event, master, imgObj):
                 master.imageModified = False
                 master.setup_mode()
                 imgObj.set_entry_data()
-<<<<<<< HEAD
+                
     # if the '.' key is pressed, post to the competition server
     elif event.keysym == '.':
         print "posting to competition server."
         
-    #
-=======
-
+    
     # if the 'n' key is pressed, goto prev image
->>>>>>> 93a98f1cd35a47a4062626ca9edf2dd3efc97d7d
     elif event.keysym == 'n':
         if master.mode == mode.cropped:
             if master.cropIndex > 0:
