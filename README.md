@@ -6,6 +6,7 @@ Image Manipulation Genie
 git clone https://github.com/CnuUasLab/IMG.git
 cd IMG
 pip install -r Requirements.txt
+sudo apt-get install python-imaging-tk
 python img.py
 ```
 

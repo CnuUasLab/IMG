@@ -72,7 +72,10 @@ def key_press(event, master, imgObj):
                 master.imageModified = False
                 master.setup_mode()
                 imgObj.set_entry_data()
-
+    # if the '.' key is pressed, post to the competition server
+    elif event.keysym == '.':
+        print "posting to competition server."
+        
     #
     elif event.keysym == 'n':
         if master.mode == mode.cropped:
