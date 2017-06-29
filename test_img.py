@@ -13,7 +13,7 @@ from img import img
 def func_instantiation():
 	try:
 		imgage_obj = img()
-	except Error:
+	except:
 		pytest.fail("Unexpected Error in instantiation.")
 
 def test_instantiation():
