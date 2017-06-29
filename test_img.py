@@ -8,11 +8,11 @@
 #=======================================#
 
 import py, pytest
-from img import IMG
+from img import img
 
 def func_instantiation():
 	try:
-		imgage_obj = IMG()
+		imgage_obj = img()
 	except Error:
 		pytest.fail("Unexpected Error in instantiation.")
 
