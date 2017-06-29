@@ -8,4 +8,9 @@ install:
   - pip install -r Requirements.txt
 
 # command to run tests
-script: python var.py
+script: 
+     - python var.py
+     - python button_press.py
+     - python image_object.py
+     - python target_image_object.py
+     - python img.py &
