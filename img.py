@@ -8,6 +8,7 @@ from enum import Enum
 from button_press import key_press, mouse_press, mouse_release
 from image_object import img_obj as img_obj
 from var import mode
+from Mission import fuckall
 
 imgW = 1200
 imgH = 800
