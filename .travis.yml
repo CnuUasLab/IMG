@@ -1,0 +1,8 @@
+language : 'python'
+install : 'pip install Requirements.txt'
+script :
+	- 'python button_press.py'
+	- 'python image_object.py'
+	- 'python target_object.py'
+	- 'python var.py'
+	- 'python img.py &'
