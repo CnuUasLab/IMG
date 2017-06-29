@@ -4,6 +4,7 @@ import sys
 from enum import Enum
 from var import mode
 
+cropImgSize = (500, 500)
 class img_obj:
 
 	def __init__(self, master, newImg):
@@ -41,7 +42,7 @@ class img_obj:
 		roi = self.imgCopy[pts[i][1]:pts[i+1][1], pts[i][0]:pts[i+1][0]]
 
 		# set size of new image
-		roi = cv2.resize(roi, (400, 400))
+		roi = cv2.resize(roi, cropImgSize)
 		return roi
 
 		# ensures positive area and draws the rectangle
