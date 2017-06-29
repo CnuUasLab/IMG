@@ -27,6 +27,7 @@ class targ_img_obj(img_obj):
 	def crop_roi(self):
 		roi = self.get_roi(0)
 		# this code applies to sub-cropping for greater accurracy
+
 		self.imgLive = roi.copy()
 		self.imgCopy = roi.copy()
 
@@ -34,7 +35,11 @@ class targ_img_obj(img_obj):
 
 	# makes rectangle?? davis help
 	def make_rectangle(self):
+
+		# only allow 1 red rectangle
 		self.reset()
+
+		# call the super method
 		img_obj.make_rectangle(self)
 
 	# gets data from entry fields/dropdowns
