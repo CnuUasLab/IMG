@@ -1,3 +1,14 @@
+#===========================================================#
+#                                                           #
+#   Description: This is the main program for the imaging   #
+#              system used on the ground station.           #
+#                                                           #
+#                                                           #
+#                   Author: daviscatherman                  #
+#                  Version: 0.0.1                           #
+#                                                           #
+#===========================================================#
+
 import numpy as np
 import cv2
 import Tkinter as tk
@@ -14,6 +25,12 @@ imgH = 800
 
 nullImg = np.zeros((1,1,3), np.uint8)
 
+#=======================================
+#
+#    Instance of the class used for the
+#      main application
+#
+#=======================================
 class img:
 
 	def __init__(self):
@@ -42,6 +59,14 @@ class img:
 		self.window = tk.Tk()  #Makes main window
 		self.setup_GUI()
 
+
+        #======================
+        #
+        #  Imports images to be used
+        #   in the image recognition
+        #   code using OpenCV
+        #
+        #======================
 	def import_images(self):
 		for filename in glob.glob('SampleImages/*.jpg'):
 			img = cv2.imread(filename)
@@ -57,6 +82,12 @@ class img:
 			self.origIndex = 0
 		self.update_curr_img_obj()
 
+        #==============================
+        #
+        # Create the Display for the ground
+        #   station team to interface with.
+        #
+        #==============================
 	def setup_GUI(self):
 
 		self.window.wm_title("Image Manipulation Genie (IMG)")
@@ -79,11 +110,23 @@ class img:
 		# run the main loop of tkinter
 		self.window.mainloop() #Starts GUI
 
+        #==========================
+        #
+        # Loop method that calls
+        #  show_image repeatedly.
+        #
+        #==========================
 	def image_loop(self):
 	    self.show_image()
 	    self.lmain.after(100, lambda: self.lmain.focus_force())
 	    self.lmain.after(250, self.image_loop)
 
+        #===============================
+        #
+        # Show image in tkinter and run
+        #   CV2 operations on it.
+        #
+        #===============================
 	def show_image(self):
 		self.update_curr_img_obj()
 		liveImage = self.currImgObj.get_image_live()
@@ -97,6 +140,11 @@ class img:
 
 		self.lmain.configure(image=imgtk)
 
+        #============================
+        #
+        # Setup the viewing window.
+        #
+        #============================
 	def setup_mode(self):
 	    if self.mode == mode.orig:
 	        self.sliderFrame.grid_forget()
@@ -106,6 +154,12 @@ class img:
 	        self.sliderFrame = tk.Frame(self.window, width=800, height=400)
 	        self.sliderFrame.grid(row = 1, column=0, padx=10, pady=2)
 
+        #===============================
+        #
+        # Updates the current image with
+        #  the one that is needed for operations.
+        #
+        #===============================
 	def update_curr_img_obj(self):
 
 		if len(self.origList) and self.mode == mode.orig:
@@ -115,9 +169,14 @@ class img:
 		else:
 			# null obj
 			self.currImgObj = img_obj(self, nullImg)
-
+#===================
+#
+# Start main application
+#
+#===================
 def main():
 	app = img()
+
 
 if __name__ == "__main__":
     main()
