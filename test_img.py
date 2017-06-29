@@ -12,9 +12,9 @@ from img import IMG
 
 def func_instantiation():
 	try:
-    	imgage_obj = IMG()
-    except Error:
-    	pytest.fail("Unexpected Error in instantiation.")
+		imgage_obj = IMG()
+	except Error:
+		pytest.fail("Unexpected Error in instantiation.")
 
 def test_instantiation():
-    assert func_instantiation() == 0
+	assert func_instantiation() == 0
