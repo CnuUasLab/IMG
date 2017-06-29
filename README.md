@@ -1,7 +1,7 @@
 # IMG #
 Image Manipulation Genie
 
-### Travis CI (Current Build) [![Build Status](https://travis-ci.org/CnuUasLab/IMG.svg?branch=master)](https://travis-ci.org/CnuUasLab/IMG)
+### Travis CI (Current Build) [![Build Status](https://travis-ci.org/CnuUasLab/IMG.svg?branch=develop)](https://travis-ci.org/CnuUasLab/IMG)
 
 ### How to Run: ###
 ```
